@@ -209,7 +209,6 @@ const triviaQuestions = {
         { question: "Who won the 2005 AL MVP?", answers: ["Alex Rodriguez", "Vladimir Guerrero", "Mariano Rivera", "Hideki Matsui"], correct: 0 },
         { question: "Which shortstop was the 1965 AL MVP?", answers: ["Zoilo Versalles", "Tony Oliva", "Earl Battey", "Mudcat Grant"], correct: 0 },
         { question: "Who was the shortstop for the 1990 Reds World Series champions?", answers: ["Barry Larkin", "Chris Sabo", "Randy Myers", "Jose Rijo"], correct: 0 },
-        { question: "Which shortstop won the 1975 AL MVP?", answers: ["Fred Lynn", "Jim Rice", "Carl Yastrzemski", "Dwight Evans"], correct: 0 },
         { question: "Who was the first shortstop to win five Gold Gloves?", answers: ["Ron Hansen", "Ozzie Smith", "Omar Vizquel", "Derek Jeter"], correct: 0 },
         { question: "Which shortstop hit .340 in 1959?", answers: ["Nellie Fox", "Ron Hansen", "Luis Aparicio", "Rocky Colavito"], correct: 0 },
         { question: "Who won the 2007 AL MVP?", answers: ["Alex Rodriguez", "Magglio Ordonez", "Carlos Pena", "Vladimir Guerrero"], correct: 0 },
