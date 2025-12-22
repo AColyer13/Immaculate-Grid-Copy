@@ -1,0 +1,520 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
+}
+
+#backgroundContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
+    z-index: -2;
+}
+
+/* Baseball Diamond */
+.field-container::before {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, 0) rotate(45deg);
+    width: 300px;
+    height: 300px;
+    background: rgba(210, 180, 140, 0.8);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    z-index: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Pitcher's Mound */
+.field-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px;
+    height: 35px;
+    background: rgba(165, 135, 100, 0.9);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    z-index: 0;
+}
+
+#root {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.foregroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.topLeftText {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+}
+
+.info, .leaders, .reset-btn {
+    position: absolute;
+    top: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.info {
+    right: 80px;
+}
+
+.leaders {
+    right: 20px;
+}
+
+.reset-btn {
+    right: 140px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.info:hover, .leaders:hover, .reset-btn:hover {
+    transform: scale(1.1);
+}
+
+.field-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+/* Position Classes */
+.position {
+    position: absolute;
+    z-index: 5;
+}
+
+/* Outfield */
+.left-field {
+    top: 18%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+}
+
+.center-field {
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.right-field {
+    top: 18%;
+    right: 25%;
+    transform: translate(50%, -50%);
+}
+
+/* Infield */
+.third-base {
+    top: 42%;
+    left: 36%;
+    transform: translate(-50%, -50%);
+}
+
+.shortstop {
+    top: 25%;
+    left: 43%;
+    transform: translate(-50%, -50%);
+}
+
+.second-base {
+    top: 25%;
+    right: 43%;
+    transform: translate(50%, -50%);
+}
+
+.first-base {
+    top: 42%;
+    right: 36%;
+    transform: translate(50%, -50%);
+}
+
+/* Battery */
+.catcher {
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.designated-hitter {
+    top: 72%;
+    right: 25%;
+    transform: translate(0, -50%);
+}
+
+/* Player Cards */
+.player {
+    width: 85.5px;
+    height: 114px;
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #333;
+}
+
+.player:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.player.empty {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.empty-text {
+    font-size: 48px;
+    color: #888;
+    margin: 0;
+}
+
+/* Player Card with Image */
+.player .player-card-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.player img.team-logo {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.player-rating-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.45);
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 2;
+}
+
+.player-rating-text {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: black 2px 1px 4px;
+    z-index: 3;
+}
+
+.player-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    font-size: 8px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 2px;
+    z-index: 2;
+}
+
+/* Rarity Gradients */
+.rarity-legendary {
+    background: linear-gradient(to right bottom, #e6bc35, #fff3d4, #e6bc35);
+}
+
+.rarity-epic {
+    background: linear-gradient(to right bottom, #a335ee, #d7b3ff, #a335ee);
+}
+
+.rarity-rare {
+    background: linear-gradient(to right bottom, #0070dd, #8fc5ff, #0070dd);
+}
+
+.rarity-common {
+    background: linear-gradient(to right bottom, #9d9d9d, #e5e5e5, #9d9d9d);
+}
+
+/* Overall Rating Circle */
+.absolute-element {
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    width: 120px;
+    height: 120px;
+    z-index: 10;
+}
+
+.animated-circle {
+    fill: none;
+    stroke: #f39c12;
+    stroke-width: 4;
+    stroke-dasharray: 251.2;
+    stroke-dashoffset: 251.2;
+    animation: fillCircle 2s ease-out forwards;
+}
+
+@keyframes fillCircle {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.rating-container {
+    text-align: center;
+    color: white;
+}
+
+.animated-number {
+    font-size: 36px;
+    font-weight: bold;
+    display: block;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.rating-container p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Bottom Right Score */
+.botRightText {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: white;
+    z-index: 10;
+}
+
+.botRightText h1 {
+    font-size: 24px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #2c3e50;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 70vh;
+    overflow-y: auto;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+}
+
+.player-search {
+    margin: 20px 0;
+}
+
+.player-search input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+.player-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.player-option {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.player-option:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #f39c12;
+    transform: translateY(-2px);
+}
+
+.player-option h3 {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.player-option p {
+    font-size: 12px;
+    color: #bbb;
+    margin: 3px 0;
+}
+
+.player-rating-display {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f39c12;
+}
+
+/* Trivia Styles */
+.trivia-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.trivia-question {
+    font-size: 20px;
+    margin: 30px 0;
+    line-height: 1.6;
+}
+
+.trivia-answers {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.trivia-answer {
+    padding: 15px 25px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.trivia-answer:hover:not(:disabled) {
+    background: rgba(52, 152, 219, 0.3);
+    border-color: #f39c12;
+    transform: translateX(5px);
+}
+
+.trivia-answer:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.trivia-answer.correct {
+    background: rgba(39, 174, 96, 0.5);
+    border-color: #27ae60;
+}
+
+.trivia-answer.incorrect {
+    background: rgba(231, 76, 60, 0.5);
+    border-color: #e74c3c;
+}
+
+.result-message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.result-message.correct {
+    background: rgba(39, 174, 96, 0.3);
+    color: #2ecc71;
+}
+
+.result-message.incorrect {
+    background: rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,195 @@
+/* Mobile-Specific Styles for Immaculate Grid */
+/* Optimized for screens 768px and below */
+
+/* Base mobile adjustments */
+body {
+    font-size: 14px;
+}
+
+.topLeftText {
+    font-size: 20px !important;
+    top: 10px !important;
+    left: 10px !important;
+}
+
+.info, .leaders, .reset-btn {
+    width: 40px !important;
+    height: 40px !important;
+    top: 10px !important;
+}
+
+.info {
+    right: 60px !important;
+}
+
+.leaders {
+    right: 10px !important;
+}
+
+.reset-btn {
+    right: 110px !important;
+    font-size: 10px !important;
+}
+
+/* Player cards - smaller for mobile */
+.player {
+    width: 60px !important;
+    height: 80px !important;
+}
+
+.empty-text {
+    font-size: 32px !important;
+}
+
+/* Rating circle - smaller for mobile */
+.absolute-element {
+    width: 80px !important;
+    height: 80px !important;
+    bottom: 5% !important;
+    right: 3% !important;
+}
+
+.animated-number {
+    font-size: 24px !important;
+}
+
+.rating-container p {
+    font-size: 10px !important;
+}
+
+/* Bottom right score */
+.botRightText {
+    bottom: 15px !important;
+    right: 15px !important;
+}
+
+.botRightText h1 {
+    font-size: 16px !important;
+}
+
+/* Modal adjustments for mobile */
+.modal-content {
+    margin: 2% auto !important;
+    width: 95% !important;
+    max-width: none !important;
+    max-height: 85vh !important;
+    padding: 15px !important;
+}
+
+/* Trivia adjustments */
+.trivia-question {
+    font-size: 18px !important;
+    margin: 20px 0 !important;
+}
+
+.trivia-answer {
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+}
+
+/* Player list - better grid for mobile */
+.player-list {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 10px !important;
+}
+
+.player-option {
+    padding: 10px !important;
+}
+
+.player-option h3 {
+    font-size: 12px !important;
+}
+
+.player-option p {
+    font-size: 10px !important;
+}
+
+/* Position adjustments for better mobile layout */
+.left-field {
+    top: 15% !important;
+    left: 20% !important;
+}
+
+.center-field {
+    top: 8% !important;
+}
+
+.right-field {
+    top: 15% !important;
+    right: 20% !important;
+}
+
+.third-base {
+    top: 40% !important;
+    left: 30% !important;
+}
+
+.shortstop {
+    top: 22% !important;
+    left: 38% !important;
+}
+
+.second-base {
+    top: 22% !important;
+    right: 38% !important;
+}
+
+.first-base {
+    top: 40% !important;
+    right: 30% !important;
+}
+
+.catcher {
+    top: 75% !important;
+}
+
+.designated-hitter {
+    top: 68% !important;
+    right: 20% !important;
+}
+
+/* Baseball diamond - smaller for mobile */
+.field-container::before {
+    width: 250px !important;
+    height: 250px !important;
+    top: 32% !important;
+}
+
+/* Pitcher's mound - smaller for mobile */
+.field-container::after {
+    width: 28px !important;
+    height: 28px !important;
+}
+
+/* Touch-friendly interactions */
+.player, .player-option, .trivia-answer, .info, .leaders, .reset-btn {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Better text contrast on mobile */
+.topLeftText, .botRightText h1, .animated-number {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Prevent horizontal scroll */
+body {
+    overflow-x: hidden;
+}
+
+/* Improve readability */
+.modal-content {
+    font-size: 14px;
+}
+
+/* Better spacing for mobile */
+.player-name {
+    font-size: 7px !important;
+    padding: 1px !important;
+}
+
+.player-rating-text {
+    font-size: 11px !important;
+    right: 3px !important;
+}
