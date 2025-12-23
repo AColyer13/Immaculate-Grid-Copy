@@ -7,19 +7,16 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hardware acceleration for smoother animations */
-.player, .modal-content, .trivia-answer, .player-option, .info, .reset-btn {
+/* Hardware acceleration - only on elements that animate */
+.player, .modal-content, .trivia-answer, .player-option {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 body {
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
-
-    /* iOS viewport correctness (prevents “vh” weirdness) */
     height: 100vh;
     height: 100svh;
     height: 100dvh;
@@ -35,18 +32,42 @@ body {
     z-index: -2;
 }
 
-/* Ensure iOS paints the safe-area with a non-white background */
-html{
+html {
     height: 100%;
-    background-color: #2d6b3a; /* fallback behind the notch */
+    background-color: #2d6b3a;
 }
 
-/* Add responsive sizing variables (place near top, e.g. after the * reset) */
-:root{
-    /* Card scales down on small screens, caps at your current size */
+/* ===== CSS CUSTOM PROPERTIES (Single Source of Truth) ===== */
+:root {
+    /* Color tokens */
+    --color-primary: #f39c12;
+    --color-primary-rgb: 243, 156, 18;
+    --color-success: #27ae60;
+    --color-success-light: #2ecc71;
+    --color-danger: #e74c3c;
+    --color-info: #3498db;
+    --color-text: #fff;
+    --color-text-muted: #bbb;
+    --color-text-dark: #222;
+    --color-surface: #2c3e50;
+    --color-surface-dark: #222c38;
+    --color-field-green: #4a9d5f;
+    --color-field-dark: #2d6b3a;
+    --color-diamond: rgba(210, 180, 140, 0.8);
+    --color-mound: rgba(165, 135, 100, 0.9);
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 20px;
+    --space-2xl: 24px;
+
+    /* Card sizing */
     --card-w: clamp(60px, 8vmin, 85.5px);
 
-    /* Diamond scales down on small screens, caps at your current size */
+    /* Diamond sizing */
     --diamond-size: clamp(180px, 35vmin, 300px);
     --diamond-top: 35%;
 
@@ -54,64 +75,74 @@ html{
     --field-cx: 50%;
     --field-cy: calc(var(--diamond-top) + (var(--diamond-size) / 2));
 
-    /* iOS safe-area support (notch / home indicator) */
+    /* iOS safe-area support */
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
 
-    /* Top bar sizing (single source of truth) */
+    /* Top bar sizing */
     --topbar-pad: 12px;
     --topbar-min-h: 50px;
     --topbar-h: calc(var(--safe-top) + (var(--topbar-pad) * 2) + var(--topbar-min-h));
-
-    /* how much to "pull up" content under the fixed top bar (tweak if needed) */
     --topbar-overlap: 10px;
 
-    /* controls the left/right "gutters" (top bar + safe-area feel) */
+    /* Edge gutters */
     --edge-pad: 12px;
+
+    /* Animation timing */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.2s ease;
+    --transition-slow: 0.3s ease;
+
+    /* Border radius */
+    --radius-sm: 5px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 6px 20px rgba(0, 0, 0, 0.4);
+
+    /* Focus ring */
+    --focus-ring: 0 0 0 3px rgba(var(--color-primary-rgb), 0.4);
 }
 
-/* Optional: tweak layout on narrow screens (adjust to taste) */
-@media (max-width: 600px) and (orientation: portrait){
-    :root{
-        /* More vertical room for the outfield + top UI */
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Portrait phones */
+@media (max-width: 600px) and (orientation: portrait) {
+    :root {
         --diamond-top: 42%;
-
-        /* Slightly smaller cards on phones to reduce overlap */
         --card-w: clamp(52px, 10.5vmin, 72px);
-
-        /* Allow a slightly smaller diamond on very small phones */
         --diamond-size: clamp(160px, 35vmin, 260px);
+        --edge-pad: 8px;
     }
 }
 
-/* NEW: mobile + iPad landscape */
-@media (max-width: 1024px) and (orientation: landscape){
-    :root{
-        /* slightly tighter header so the field gets more height */
+/* Landscape tablets and phones */
+@media (max-width: 1024px) and (orientation: landscape) {
+    :root {
         --topbar-pad: 8px;
         --topbar-min-h: 44px;
-
-        /* bring the diamond up (landscape is height-constrained) */
         --diamond-top: 28%;
-
-        /* scale for landscape; vmin is good here */
         --diamond-size: clamp(190px, 42vmin, 320px);
         --card-w: clamp(52px, 7.2vmin, 78px);
+        --topbar-overlap: 14px;
     }
 }
 
-/* EXTRA: very short landscape phones */
-@media (max-width: 932px) and (max-height: 450px) and (orientation: landscape){
-    :root{
+/* Very short landscape phones */
+@media (max-width: 932px) and (max-height: 450px) and (orientation: landscape) {
+    :root {
         --diamond-top: 24%;
         --diamond-size: clamp(170px, 44vmin, 280px);
         --card-w: clamp(46px, 6.6vmin, 70px);
     }
 }
 
-/* iPhone Display Zoom/Accessibility: extra compact layout for small/zoomed screens */
+/* iPhone Display Zoom / Accessibility */
 @media (max-width: 430px) {
     :root {
         --topbar-pad: 6px;
@@ -119,100 +150,18 @@ html{
         --card-w: clamp(44px, 8vmin, 62px);
         --diamond-size: clamp(120px, 28vmin, 200px);
         --diamond-top: 44%;
-    }
-    .topLeftText {
-        font-size: 22px;
-    }
-    .player {
-        font-size: 12px;
-    }
-    .botRightText h1 {
-        font-size: 18px;
-    }
-    .absolute-element {
-        width: 90px;
-        height: 90px;
-    }
-    .modal-content {
-        font-size: 15px;
-        padding: 12px;
+        --edge-pad: 6px;
+        --topbar-overlap: 8px;
     }
 }
 
-#root{
+/* ===== LAYOUT ===== */
+
+#root {
     position: relative;
     width: 100%;
     height: 100%;
-
-    /* Reserve space, but remove the extra "air" under the nav bar */
     padding-top: max(0px, calc(var(--topbar-h) - var(--topbar-overlap)));
-}
-
-/* NEW: Safe-area aware top bar */
-.top-bar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    z-index: 20;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-
-    padding-top: calc(var(--topbar-pad) + var(--safe-top));
-    padding-bottom: var(--topbar-pad);
-    padding-left: calc(var(--edge-pad) + var(--safe-left));
-    padding-right: calc(var(--edge-pad) + var(--safe-right));
-
-    min-height: var(--topbar-min-h);
-
-    /* optional, but helps readability over the field image */
-    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0));
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
-.top-bar__actions{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Baseball Diamond */
-.field-container::before {
-    content: '';
-    position: absolute;
-    top: var(--diamond-top);
-    left: 50%;
-    transform: translate(-50%, 0) rotate(45deg);
-    width: var(--diamond-size);
-    height: var(--diamond-size);
-    background: rgba(210, 180, 140, 0.8);
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    z-index: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Pitcher's Mound (center it on the diamond instead of the viewport) */
-.field-container::after {
-    content: '';
-    position: absolute;
-
-    /* diamond center Y = diamond-top + (diamond-size / 2) */
-    top: calc(var(--diamond-top) + (var(--diamond-size) / 2));
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width: clamp(18px, 4vmin, 35px);
-    height: clamp(18px, 4vmin, 35px);
-
-    background: rgba(165, 135, 100, 0.9);
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    z-index: 1; /* ensure it sits above the diamond */
 }
 
 .foregroundImage {
@@ -225,51 +174,96 @@ html{
     pointer-events: none;
 }
 
-/* Title: no longer absolutely positioned */
-.topLeftText{
-    position: static;
-    top: auto;
-    left: auto;
-    margin: 0;
+/* ===== TOP BAR ===== */
 
-    /* existing styles */
-    color: white;
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+
+    padding-top: calc(var(--topbar-pad) + var(--safe-top));
+    padding-bottom: var(--topbar-pad);
+    padding-left: calc(var(--edge-pad) + var(--safe-left));
+    padding-right: calc(var(--edge-pad) + var(--safe-right));
+
+    min-height: var(--topbar-min-h);
+
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.top-bar__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.topLeftText {
+    position: static;
+    margin: 0;
+    color: var(--color-text);
     font-size: 28px;
     font-weight: bold;
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.9);
     z-index: 10;
 }
 
-/* Buttons/icons: no longer absolutely positioned */
-.info, .reset-btn{
-    position: static;
-    top: auto;
-    right: auto;
-
-    /* existing styles */
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.2s ease;
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 8px;
+@media (max-width: 430px) {
+    .topLeftText {
+        font-size: 22px;
+    }
 }
 
-.reset-btn {
-    background: #e74c3c;
-    color: white;
+/* ===== BUTTONS & INTERACTIVE ELEMENTS ===== */
+
+.info, .reset-btn {
+    position: static;
+    width: 50px;
+    height: 50px;
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: var(--radius-md);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
+    outline: none;
 }
 
 .info:hover, .reset-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
 }
+
+.info:active, .reset-btn:active {
+    transform: scale(0.95);
+}
+
+.info:focus-visible, .reset-btn:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.reset-btn {
+    background: var(--color-danger);
+    color: var(--color-text);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ===== BASEBALL FIELD ===== */
 
 .field-container {
     position: relative;
@@ -278,108 +272,140 @@ html{
     text-align: center;
 }
 
-/* Position Classes */
+/* Baseball Diamond */
+.field-container::before {
+    content: '';
+    position: absolute;
+    top: var(--diamond-top);
+    left: 50%;
+    transform: translate(-50%, 0) rotate(45deg);
+    width: var(--diamond-size);
+    height: var(--diamond-size);
+    background: var(--color-diamond);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    z-index: 0;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Pitcher's Mound */
+.field-container::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--diamond-top) + (var(--diamond-size) / 2));
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(18px, 4vmin, 35px);
+    height: clamp(18px, 4vmin, 35px);
+    background: var(--color-mound);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    z-index: 1;
+}
+
+/* ===== POSITION CLASSES ===== */
+
 .position {
     position: absolute;
     z-index: 5;
-
-    /* anchor ALL positions to diamond center */
     left: calc(var(--field-cx) + (var(--px, 0) * var(--diamond-size)));
-    top:  calc(var(--field-cy) + (var(--py, 0) * var(--diamond-size)));
-
-    /* consistent centering; remove per-class translate hacks */
+    top: calc(var(--field-cy) + (var(--py, 0) * var(--diamond-size)));
     transform: translate(-50%, -50%);
 }
 
-/* Outfield (scaled offsets) - tuned for 16:9 */
+/* Default (16:9 desktop) positions */
 .left-field   { --px: -1.15; --py: -1.00; }
 .center-field { --px:  0.00; --py: -1.15; }
 .right-field  { --px:  1.15; --py: -1.00; }
 
-/* Infield (scaled offsets) - keep near diamond edges, avoid overlap */
-.third-base  { --px: -0.90; --py:  0.00; }
-.shortstop   { --px: -0.50; --py: -0.58; }
-.second-base { --px:  0.50; --py: -0.58; }
-.first-base  { --px:  0.90; --py:  0.00; }
+.third-base   { --px: -0.90; --py:  0.00; }
+.shortstop    { --px: -0.50; --py: -0.58; }
+.second-base  { --px:  0.50; --py: -0.58; }
+.first-base   { --px:  0.90; --py:  0.00; }
 
-/* Battery */
-.catcher           { --px: 0.00; --py:  0.96; }
-.designated-hitter { --px: 0.85; --py:  0.72; }
+.catcher            { --px: 0.00; --py:  0.96; }
+.designated-hitter  { --px: 0.85; --py:  0.72; }
 
-/* Mobile: pull everything inward a bit so it fits nicely in portrait */
+/* Portrait phone positions */
 @media (max-width: 600px) and (orientation: portrait) {
-    /* Outfield */
     .left-field   { --px: -1.00; --py: -1.42; }
     .center-field { --px:  0.00; --py: -1.65; }
     .right-field  { --px:  1.00; --py: -1.42; }
 
-    /* Infield */
-    .third-base  { --px: -0.92; --py:  0.0; }
-    .shortstop   { --px: -0.44; --py: -0.76; }
-    .second-base { --px:  0.44; --py: -0.76; }
-    .first-base  { --px:  0.92; --py:  0.0; }
+    .third-base   { --px: -0.92; --py:  0.0; }
+    .shortstop    { --px: -0.44; --py: -0.76; }
+    .second-base  { --px:  0.44; --py: -0.76; }
+    .first-base   { --px:  0.92; --py:  0.0; }
 
-    /* Battery */
-    .catcher           { --px: 0.00; --py:  1.02; }
-    .designated-hitter { --px: 0.82; --py:  0.80; }
+    .catcher            { --px: 0.00; --py:  1.02; }
+    .designated-hitter  { --px: 0.82; --py:  0.80; }
 }
 
-/* NEW: Landscape positioning (closer to your 16:9 feel, less vertical spread) */
-@media (max-width: 1024px) and (orientation: landscape){
+/* Landscape positions */
+@media (max-width: 1024px) and (orientation: landscape) {
     .left-field   { --px: -1.05; --py: -0.80; }
     .center-field { --px:  0.00; --py: -0.98; }
     .right-field  { --px:  1.05; --py: -0.80; }
 
-    .third-base  { --px: -0.90; --py:  0.02; }
-    .shortstop   { --px: -0.48; --py: -0.52; }
-    .second-base { --px:  0.48; --py: -0.52; }
-    .first-base  { --px:  0.90; --py:  0.02; }
+    .third-base   { --px: -0.90; --py:  0.02; }
+    .shortstop    { --px: -0.48; --py: -0.52; }
+    .second-base  { --px:  0.48; --py: -0.52; }
+    .first-base   { --px:  0.90; --py:  0.02; }
 
-    .catcher           { --px: 0.00; --py:  0.92; }
-    .designated-hitter { --px: 0.85; --py:  0.70; }
+    .catcher            { --px: 0.00; --py:  0.92; }
+    .designated-hitter  { --px: 0.85; --py:  0.70; }
 }
 
-/* Player Cards */
+/* ===== PLAYER CARDS ===== */
+
 .player {
     width: var(--card-w);
     height: auto;
-    aspect-ratio: 3 / 4; /* ~85.5 x 114 */
+    aspect-ratio: 3 / 4;
     background-color: white;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     position: relative;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #333;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .player:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    transition: all 0.2s ease;
+    box-shadow: var(--shadow-lg);
+}
+
+.player:active {
+    transform: scale(0.98);
+}
+
+.player:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 .player.empty {
     background: rgba(255, 255, 255, 0.9);
 }
 
-/* Optional: keep the "empty +" from overpowering on small screens */
 .empty-text {
     font-size: clamp(28px, 5vmin, 48px);
     color: #888;
     margin: 0;
+    user-select: none;
 }
 
-/* Player Card with Image */
 .player .player-card-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     border: 2px solid black;
     display: flex;
     align-items: center;
@@ -401,8 +427,8 @@ html{
     width: 26px;
     height: 20px;
     background-color: rgba(0, 0, 0, 0.45);
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-right-radius: var(--radius-sm);
+    border-bottom-left-radius: var(--radius-sm);
     z-index: 2;
 }
 
@@ -410,7 +436,7 @@ html{
     position: absolute;
     top: 0;
     right: 5px;
-    color: white;
+    color: var(--color-text);
     font-size: 13px;
     font-weight: bold;
     text-shadow: black 2px 1px 4px;
@@ -422,16 +448,26 @@ html{
     bottom: 0;
     left: 0;
     right: 0;
-    color: white;
+    color: var(--color-text);
     font-size: 8px;
     background-color: rgba(0, 0, 0, 0.85);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-sm);
     padding: 2px;
     z-index: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-/* Rarity Gradients */
+@media (max-width: 430px) {
+    .player {
+        font-size: 12px;
+    }
+}
+
+/* ===== RARITY GRADIENTS ===== */
+
 .rarity-legendary {
     background: linear-gradient(to right bottom, #e6bc35, #fff3d4, #e6bc35);
 }
@@ -448,23 +484,28 @@ html{
     background: linear-gradient(to right bottom, #9d9d9d, #e5e5e5, #9d9d9d);
 }
 
-/* Overall Rating Circle */
+/* ===== OVERALL RATING CIRCLE ===== */
+
 .absolute-element {
     position: absolute;
     bottom: 10%;
-
-    /* moved from right to left */
     left: calc(5% + var(--safe-left));
     right: auto;
-
     width: 120px;
     height: 120px;
     z-index: 10;
 }
 
+@media (max-width: 430px) {
+    .absolute-element {
+        width: 90px;
+        height: 90px;
+    }
+}
+
 .animated-circle {
     fill: none;
-    stroke: #f39c12;
+    stroke: var(--color-primary);
     stroke-width: 4;
     stroke-dasharray: 251.2;
     stroke-dashoffset: 251.2;
@@ -479,7 +520,7 @@ html{
 
 .rating-container {
     text-align: center;
-    color: white;
+    color: var(--color-text);
 }
 
 .animated-number {
@@ -496,16 +537,14 @@ html{
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
-/* Bottom Right Score */
+/* ===== SCORE DISPLAY ===== */
+
 .botRightText {
     position: absolute;
-    bottom: calc(20px + var(--safe-bottom));
-
-    /* moved from right to left */
-    left: calc(20px + var(--safe-left));
+    bottom: calc(var(--space-xl) + var(--safe-bottom));
+    left: calc(var(--space-xl) + var(--safe-left));
     right: auto;
-
-    color: white;
+    color: var(--color-text);
     z-index: 10;
 }
 
@@ -514,7 +553,14 @@ html{
     text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.9);
 }
 
-/* Modal Styles */
+@media (max-width: 430px) {
+    .botRightText h1 {
+        font-size: 18px;
+    }
+}
+
+/* ===== MODAL ===== */
+
 .modal {
     display: none;
     position: fixed;
@@ -524,8 +570,6 @@ html{
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-
-    /* help iOS safe areas when modal is full-screen */
     padding-top: var(--safe-top);
     padding-bottom: var(--safe-bottom);
     padding-left: var(--safe-left);
@@ -533,69 +577,86 @@ html{
 }
 
 .modal-content {
-    background-color: #2c3e50;
+    background-color: var(--color-surface);
     margin: 5% auto;
-    padding: 20px;
-    border-radius: 10px;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
     width: 80%;
     max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
-    color: white;
+    color: var(--color-text);
     -webkit-overflow-scrolling: touch;
 }
 
-/* Mobile: make modal a full-height sheet (no forced scrolling from margin/max-height) */
-@media (max-width: 600px), (max-aspect-ratio: 3/4){
-    .modal{
-        padding: 0; /* content will handle safe-area padding */
+/* Mobile modal - full height sheet */
+@media (max-width: 600px), (max-aspect-ratio: 3/4) {
+    .modal {
+        padding: 0;
     }
 
-    .modal-content{
+    .modal-content {
         width: 100%;
         max-width: none;
-
         margin: 0;
         border-radius: 0;
-
-        /* fill the usable screen area */
         height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
         max-height: none;
+        padding-top: calc(var(--space-xl) + var(--safe-top));
+        padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
+        padding-left: calc(var(--space-lg) + var(--safe-left));
+        padding-right: calc(var(--space-lg) + var(--safe-right));
+    }
+}
 
-        /* keep content off the notch/home indicator */
-        padding-top: calc(20px + var(--safe-top));
-        padding-bottom: calc(20px + var(--safe-bottom));
-        padding-left: calc(16px + var(--safe-left));
-        padding-right: calc(16px + var(--safe-right));
+@media (max-width: 430px) {
+    .modal-content {
+        font-size: 15px;
+        padding: var(--space-md);
     }
 }
 
 .close {
-    color: #aaa;
+    color: var(--color-text-muted);
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color var(--transition-fast);
+    line-height: 1;
+    padding: var(--space-xs);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close:hover,
 .close:focus {
-    color: white;
+    color: var(--color-text);
 }
 
+.close:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ===== PLAYER SEARCH ===== */
+
 .player-search {
-    margin: 20px 0;
+    margin: var(--space-xl) 0;
 }
 
 .player-search input {
     width: 100%;
-    padding: 12px 16px;
+    padding: var(--space-md) var(--space-lg);
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     border: 2px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.1);
-    color: white;
-    transition: all 0.3s ease;
+    color: var(--color-text);
+    transition: all var(--transition-slow);
     -webkit-appearance: none;
     appearance: none;
     outline: none;
@@ -607,32 +668,58 @@ html{
 
 .player-search input:focus {
     background: rgba(255, 255, 255, 0.2);
-    border-color: #f39c12;
-    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.3);
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
 }
+
+/* Visually hidden but accessible to screen readers */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== PLAYER LIST ===== */
 
 .player-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
-    margin-top: 20px;
+    margin-top: var(--space-xl);
 }
 
 .player-option {
     background: rgba(255, 255, 255, 0.1);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all var(--transition-slow);
     text-align: center;
     border: 2px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .player-option:hover {
     background: rgba(255, 255, 255, 0.2);
-    border-color: #f39c12;
+    border-color: var(--color-primary);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
+}
+
+.player-option:active {
+    transform: scale(0.97);
+}
+
+.player-option:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 .player-option h3 {
@@ -642,20 +729,21 @@ html{
 
 .player-option p {
     font-size: 12px;
-    color: #bbb;
+    color: var(--color-text-muted);
     margin: 3px 0;
 }
 
 .player-rating-display {
     font-size: 20px;
     font-weight: bold;
-    color: #f39c12;
+    color: var(--color-primary);
 }
 
-/* Trivia Styles */
+/* ===== TRIVIA ===== */
+
 .trivia-container {
     text-align: center;
-    padding: 20px;
+    padding: var(--space-xl);
 }
 
 .trivia-question {
@@ -676,18 +764,29 @@ html{
     padding: 15px 25px;
     font-size: 16px;
     background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #3498db;
-    border-radius: 8px;
-    color: white;
+    border: 2px solid var(--color-info);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all var(--transition-slow);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .trivia-answer:hover:not(:disabled) {
     background: rgba(52, 152, 219, 0.3);
-    border-color: #f39c12;
+    border-color: var(--color-primary);
     transform: translateX(8px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.trivia-answer:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.trivia-answer:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 .trivia-answer:disabled {
@@ -697,13 +796,15 @@ html{
 
 .trivia-answer.correct {
     background: rgba(39, 174, 96, 0.5);
-    border-color: #27ae60;
+    border-color: var(--color-success);
 }
 
 .trivia-answer.incorrect {
     background: rgba(231, 76, 60, 0.5);
-    border-color: #e74c3c;
+    border-color: var(--color-danger);
 }
+
+/* ===== RESULT MESSAGES ===== */
 
 .result-message,
 .trivia-result-message {
@@ -711,72 +812,103 @@ html{
     font-size: 18px;
     font-weight: bold;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin: 15px 0;
 }
 
 .result-message.correct,
 .trivia-result-message.correct {
     background: rgba(39, 174, 96, 0.3);
-    color: #2ecc71;
+    color: var(--color-success-light);
 }
 
 .result-message.incorrect,
 .trivia-result-message.incorrect {
     background: rgba(231, 76, 60, 0.3);
-    color: #e74c3c;
+    color: var(--color-danger);
 }
+
+/* ===== SELECTED PLAYER INFO ===== */
 
 .selected-player-info {
     text-align: center;
-    margin-top: 20px;
+    margin-top: var(--space-xl);
     padding: 15px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
 }
 
 .selected-player-info h3 {
-    color: #f39c12;
-    margin-bottom: 10px;
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
 }
 
 .selected-player-info p {
-    color: #bbb;
+    color: var(--color-text-muted);
     font-size: 14px;
 }
 
-/* NEW: Theme-aware safe-area backgrounds and top bar gradient */
+/* ===== THEME-AWARE STYLES ===== */
+
 @media (prefers-color-scheme: dark) {
     .top-bar {
         background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.15));
-        color: #fff;
+        color: var(--color-text);
     }
     .modal {
         background-color: rgba(0, 0, 0, 0.85);
     }
     .modal-content {
-        background-color: #222c38;
-        color: #fff;
+        background-color: var(--color-surface-dark);
+        color: var(--color-text);
     }
 }
 
 @media (prefers-color-scheme: light) {
     .top-bar {
-        /* was a white gradient; make it blend with the field instead */
         background: linear-gradient(to bottom, rgba(0,0,0,0.28), rgba(0,0,0,0));
-        color: #fff;
+        color: var(--color-text);
     }
-
-    /* keep your modal light if you want; no change required */
-    /* ...existing code... */
 }
 
-/* Animation */
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .animated-circle {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
     to {
         opacity: 1;
+    }
+}
+
+/* ===== PRINT STYLES (just in case) ===== */
+
+@media print {
+    .top-bar,
+    .modal,
+    .reset-btn,
+    .info {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
     }
 }

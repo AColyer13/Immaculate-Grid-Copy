@@ -8,12 +8,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HOF Draft">
     <meta name="theme-color" content="#4a9d5f">
+    <meta name="color-scheme" content="dark light">
+    
+    <!-- Preconnect for faster resource loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234a9d5f'/%3E%3Ctext x='50' y='65' font-family='Arial' font-size='60' font-weight='bold' text-anchor='middle' fill='white'%3E⚾%3C/text%3E%3C/svg%3E">
     <title>HOF Draft</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="backgroundContainer"></div>
+    <div id="backgroundContainer" aria-hidden="true"></div>
 
     <!-- Load external data files first -->
     <script src="players2025.js"></script>
@@ -21,106 +26,109 @@
     <script src="teamLogos.js"></script>
 
     <div id="root">
-        <img class="foregroundImage" src="field.png" alt="Baseball Field" onerror="this.style.display='none'">
+        <img class="foregroundImage" src="field.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
 
-        <!-- REPLACE the standalone title + icons + reset with this top bar -->
-        <header class="top-bar">
+        <header class="top-bar" role="banner">
             <h1 class="topLeftText">HOF Draft</h1>
 
             <div class="top-bar__actions">
-                <button class="reset-btn" id="resetBtn">Reset</button>
+                <button class="reset-btn" id="resetBtn" type="button" aria-label="Reset game">Reset</button>
 
-                <img class="info" src="info.png" alt="Info"
-                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Ccircle cx=%2225%22 cy=%2225%22 r=%2220%22 fill=%22%234a90e2%22/%3E%3Ctext x=%2225%22 y=%2232%22 font-size=%2228%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22%3Ei%3C/text%3E%3C/svg%3E'">
+                <button class="info" type="button" aria-label="Game information" aria-haspopup="dialog">
+                    <img src="info.png" alt=""
+                         onerror="this.parentElement.innerHTML='<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;50&quot; height=&quot;50&quot; viewBox=&quot;0 0 50 50&quot;><circle cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;20&quot; fill=&quot;#4a90e2&quot;/><text x=&quot;25&quot; y=&quot;32&quot; font-size=&quot;28&quot; fill=&quot;white&quot; text-anchor=&quot;middle&quot; font-family=&quot;Arial&quot;>i</text></svg>'">
+                </button>
             </div>
         </header>
 
-        <div class="field-container">
+        <main class="field-container" role="main" aria-label="Baseball field with player positions">
             <!-- Outfield Positions -->
             <div class="left-field position">
-                <div class="player empty" data-position="LF">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="LF" type="button" aria-label="Left Field - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="center-field position">
-                <div class="player empty" data-position="CF">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="CF" type="button" aria-label="Center Field - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="right-field position">
-                <div class="player empty" data-position="RF">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="RF" type="button" aria-label="Right Field - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <!-- Infield Positions -->
             <div class="third-base position">
-                <div class="player empty" data-position="3B">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="3B" type="button" aria-label="Third Base - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="shortstop position">
-                <div class="player empty" data-position="SS">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="SS" type="button" aria-label="Shortstop - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="second-base position">
-                <div class="player empty" data-position="2B">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="2B" type="button" aria-label="Second Base - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="first-base position">
-                <div class="player empty" data-position="1B">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="1B" type="button" aria-label="First Base - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <!-- Battery Positions -->
             <div class="catcher position">
-                <div class="player empty" data-position="C">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="C" type="button" aria-label="Catcher - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <div class="designated-hitter position">
-                <div class="player empty" data-position="DH">
-                    <h3 class="empty-text">+</h3>
-                </div>
+                <button class="player empty" data-position="DH" type="button" aria-label="Designated Hitter - empty, click to select player">
+                    <span class="empty-text" aria-hidden="true">+</span>
+                </button>
             </div>
 
             <!-- Overall Rating Display -->
-            <div class="absolute-element">
-                <svg width="100%" height="100%">
+            <aside class="absolute-element" aria-label="Overall team rating">
+                <svg width="100%" height="100%" role="img" aria-labelledby="rating-title">
+                    <title id="rating-title">Team Overall Rating</title>
                     <circle cx="50%" cy="50%" r="40" class="animated-circle"></circle>
                     <foreignObject x="25%" y="27%" width="50%" height="50%">
                         <div class="rating-container">
-                            <span class="animated-number" id="overallRating">0</span>
+                            <span class="animated-number" id="overallRating" aria-live="polite">0</span>
                             <p>OVR</p>
                         </div>
                     </foreignObject>
                 </svg>
-            </div>
-        </div>
+            </aside>
+        </main>
 
-        <div class="botRightText">
-            <h1>correct answers: <span id="correctCount">0</span></h1>
-        </div>
+        <aside class="botRightText" aria-label="Score">
+            <h2>correct answers: <span id="correctCount" aria-live="polite">0</span></h2>
+        </aside>
     </div>
 
     <!-- Player Selection Modal -->
-    <div id="playerModal" class="modal">
+    <div id="playerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Select a Player</h2>
+            <button class="close" type="button" aria-label="Close modal">&times;</button>
+            <h2 id="modal-title">Select a Player</h2>
             <div class="player-search">
-                <input type="text" id="playerSearch" placeholder="Search for a player...">
+                <label for="playerSearch" class="visually-hidden">Search for a player</label>
+                <input type="search" id="playerSearch" placeholder="Search for a player..." autocomplete="off">
             </div>
-            <div id="playerList" class="player-list"></div>
+            <div id="playerList" class="player-list" role="list" aria-label="Available players"></div>
         </div>
     </div>
 
