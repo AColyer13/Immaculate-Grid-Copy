@@ -196,6 +196,7 @@ const players2025 = {
             { "name": "Luke Appling", "rating": 80, "team": "White Sox", "rarity": "legendary" },
             { "name": "Joe Cronin", "rating": 79, "team": "Red Sox", "rarity": "legendary" },
             { "name": "Pee Wee Reese", "rating": 78, "team": "Dodgers", "rarity": "legendary" },
+            { "name": "Javier Baez", "rating": 78, "team": "Tigers", "rarity": "legendary" },
             { "name": "Bobby Wallace", "rating": 77, "team": "Cardinals", "rarity": "legendary" },
             { "name": "Dave Concepcion", "rating": 76, "team": "Reds", "rarity": "legendary" },
             { "name": "Travis Jackson", "rating": 75, "team": "Giants","rarity": "legendary" }
@@ -204,9 +205,9 @@ const players2025 = {
             { "name": "Bo Bichette", "rating": 74, "team": "Blue Jays", "rarity": "common" },
             { "name": "Dansby Swanson", "rating": 73, "team": "Cubs", "rarity": "common" },
             { "name": "Carlos Correa", "rating": 72, "team": "Twins", "rarity": "common" },
+            { "name": "Oneil Cruz", "rating": 72, "team": "Pirates", "rarity": "common" },
             { "name": "Tim Anderson", "rating": 71, "team": "White Sox", "rarity": "common" },
             { "name": "Willy Adames", "rating": 70, "team": "Brewers", "rarity": "common" },
-            { "name": "Javier Baez", "rating": 69, "team": "Tigers", "rarity": "common" },
             { "name": "Marcus Semien", "rating": 68, "team": "Rangers", "rarity": "common" },
             { "name": "JP Crawford", "rating": 67, "team": "Mariners", "rarity": "common" },
             { "name": "Amed Rosario", "rating": 66, "team": "Guardians", "rarity": "common" },
@@ -220,12 +221,12 @@ const players2025 = {
             { "name": "Elvis Andrus", "rating": 58, "team": "White Sox", "rarity": "common" },
             { "name": "Nico Hoerner", "rating": 57, "team": "Cubs", "rarity": "common" },
             { "name": "Jorge Mateo", "rating": 56, "team": "Orioles", "rarity": "common" },
-            { "name": "Oneil Cruz", "rating": 55, "team": "Pirates", "rarity": "common" },
             { "name": "Nick Ahmed", "rating": 54, "team": "Diamondbacks", "rarity": "common" },
             { "name": "Alcides Escobar", "rating": 53, "team": "Nationals", "rarity": "common" },
             { "name": "Jose Iglesias", "rating": 52, "team": "Red Sox", "rarity": "common" },
             { "name": "Kevin Newman", "rating": 51, "team": "Pirates", "rarity": "common" },
-            { "name": "Freddy Galvis", "rating": 50, "team": "Phillies", "rarity": "common" }
+            { "name": "Freddy Galvis", "rating": 50, "team": "Phillies", "rarity": "common" },
+            { "name": "Wander Franco", "rating": 14, "team": "Rays", "rarity": "common" },
         ]
     },
     "C": {
