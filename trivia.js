@@ -407,7 +407,6 @@ const triviaQuestions = {
         { question: "Which right fielder won the 1958 AL MVP?", answers: ["Mickey Mantle", "Jackie Jensen", "Bob Turley", "Ted Williams"], correct: 1 },
         { question: "Which right fielder won the 1979 NL MVP?", answers: ["Keith Hernandez", "Dave Parker", "Mike Schmidt", "George Foster"], correct: 1 },
         { question: "Which right fielder won the 1988 AL MVP?", answers: ["Kirby Puckett", "Jose Canseco", "Mike Greenwell", "Wade Boggs"], correct: 1 },
-        { question: "Who was the first right fielder to hit 100 home runs?", answers: ["Babe Ruth", "Hank Aaron", "Mel Ott", "Frank Robinson"], correct: 1 },
         { question: "Which right fielder batted .302 in 1948?", answers: ["Ted Williams", "Stan Musial", "Lou Boudreau", "Tommy Henrich"], correct: 1 },
         { question: "Who won the 2000 NL MVP?", answers: ["Barry Bonds", "Jeff Kent", "Mark McGwire", "Sammy Sosa"], correct: 1 },
         { question: "Which right fielder won the 1964 AL MVP?", answers: ["Brooks Robinson", "Mickey Mantle", "Harmon Killebrew", "Tony Oliva"], correct: 0 },
