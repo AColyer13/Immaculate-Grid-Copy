@@ -10,6 +10,129 @@ let gameState = {
 };
 
 let currentPositionSlot = null;
+const STORAGE_KEY = 'hofDraftState-v1';
+
+// Utility helpers
+function isActivationKey(event) {
+    return event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar';
+}
+
+function persistGameState() {
+    try {
+        const payload = {
+            selectedPlayers: gameState.selectedPlayers,
+            correctCount: gameState.correctCount,
+            pendingTriviaResults: gameState.pendingTriviaResults,
+            cachedQuestions: gameState.cachedQuestions
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (error) {
+        console.warn('Unable to save current lineup', error);
+    }
+}
+
+function clearPersistedGame() {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+        console.warn('Unable to clear saved lineup', error);
+    }
+}
+
+function loadPersistedGame() {
+    let saved;
+    try {
+        saved = localStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+        console.warn('Unable to access saved lineup', error);
+        return;
+    }
+
+    if (!saved) return;
+
+    try {
+        const parsed = JSON.parse(saved);
+        if (!parsed) return;
+
+        if (parsed.cachedQuestions) {
+            gameState.cachedQuestions = parsed.cachedQuestions;
+        }
+
+        if (parsed.pendingTriviaResults) {
+            gameState.pendingTriviaResults = parsed.pendingTriviaResults;
+        }
+
+        if (parsed.selectedPlayers) {
+            Object.entries(parsed.selectedPlayers).forEach(([position, player]) => {
+                const slot = document.querySelector(`.player[data-position="${position}"]`);
+                if (!slot) return;
+                const hydratedPlayer = { ...player };
+                renderPlayerSlot(slot, hydratedPlayer);
+                gameState.selectedPlayers[position] = hydratedPlayer;
+            });
+        }
+
+        const restoredCorrectCount = typeof parsed.correctCount === 'number'
+            ? parsed.correctCount
+            : Object.keys(gameState.selectedPlayers).length;
+
+        gameState.correctCount = restoredCorrectCount;
+
+        updateScore();
+        updateOverallRating();
+    } catch (error) {
+        console.warn('Failed to load saved lineup', error);
+        clearPersistedGame();
+    }
+}
+
+function renderPlayerSlot(slot, player) {
+    if (!slot || !player) return;
+
+    slot.classList.remove('empty');
+    slot.innerHTML = '';
+
+    const playerCard = document.createElement('div');
+    playerCard.className = 'player-card-background';
+    playerCard.style.width = '100%';
+    playerCard.style.height = '100%';
+    playerCard.style.position = 'absolute';
+    playerCard.style.top = '0';
+    playerCard.style.left = '0';
+    playerCard.style.background = getRarityGradient(player.rarity);
+    playerCard.style.borderRadius = '5px';
+    playerCard.style.border = '2px solid black';
+    playerCard.style.display = 'flex';
+    playerCard.style.alignItems = 'center';
+    playerCard.style.justifyContent = 'center';
+    playerCard.style.padding = '5px';
+    playerCard.style.boxSizing = 'border-box';
+
+    const teamLogo = document.createElement('img');
+    teamLogo.className = 'team-logo';
+    teamLogo.src = teamLogos[player.team] || 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Major_League_Baseball_logo.svg';
+    teamLogo.alt = `${player.team} logo`;
+    teamLogo.style.width = '80%';
+    teamLogo.style.height = '80%';
+    teamLogo.style.objectFit = 'contain';
+    playerCard.appendChild(teamLogo);
+
+    const ratingBadge = document.createElement('div');
+    ratingBadge.className = 'player-rating-badge';
+
+    const ratingText = document.createElement('div');
+    ratingText.className = 'player-rating-text';
+    ratingText.textContent = player.rating;
+
+    const nameLabel = document.createElement('div');
+    nameLabel.className = 'player-name';
+    nameLabel.textContent = player.name;
+
+    slot.appendChild(playerCard);
+    slot.appendChild(ratingBadge);
+    slot.appendChild(ratingText);
+    slot.appendChild(nameLabel);
+}
 
 // Utility function to get random items from array
 function getRandomItems(array, count) {
@@ -20,14 +143,20 @@ function getRandomItems(array, count) {
 // Initialize the game
 function init() {
     setupEventListeners();
-    resetGame(); // Initialize game state with cached questions
+    resetGame({ preserveStorage: true });
+    loadPersistedGame();
 }
 
 // Setup Event Listeners
 function setupEventListeners() {
     // Add click listeners to all player slots
     const playerSlots = document.querySelectorAll('.player');
-    playerSlots.forEach(slot => {
+    const totalSlots = playerSlots.length;
+    playerSlots.forEach((slot, index) => {
+        slot.setAttribute('tabindex', '0');
+        slot.setAttribute('aria-setsize', totalSlots);
+        slot.setAttribute('aria-posinset', index + 1);
+
         slot.addEventListener('click', function() {
             if (this.classList.contains('empty')) {
                 currentPositionSlot = this;
@@ -35,6 +164,13 @@ function setupEventListeners() {
             } else {
                 // Show trivia result for filled slot
                 showTriviaResult(this.getAttribute('data-position'));
+            }
+        });
+
+        slot.addEventListener('keydown', event => {
+            if (isActivationKey(event)) {
+                event.preventDefault();
+                slot.click();
             }
         });
     });
@@ -61,7 +197,7 @@ function setupEventListeners() {
     }
     
     if (resetBtn) {
-        resetBtn.addEventListener('click', resetGame);
+        resetBtn.addEventListener('click', () => resetGame());
     }
 }
 
@@ -113,6 +249,13 @@ function showTriviaQuestion(position) {
         button.addEventListener('click', function() {
             checkAnswer(parseInt(this.getAttribute('data-index')), position);
         });
+
+        button.addEventListener('keydown', event => {
+            if (isActivationKey(event)) {
+                event.preventDefault();
+                checkAnswer(parseInt(button.getAttribute('data-index'), 10), position);
+            }
+        });
     });
 }
 
@@ -126,6 +269,7 @@ function checkAnswer(selectedIndex, position) {
         answeredCorrectly: correct,
         question: gameState.currentQuestion
     };
+    persistGameState();
 
     // Show feedback
     const answerButtons = document.querySelectorAll('.trivia-answer');
@@ -150,6 +294,7 @@ function closePlayerModal() {
     modal.style.display = 'none';
     // Don't clear currentQuestion and answeredCorrectly here anymore
     // since they're now stored in pendingTriviaResults
+    currentPositionSlot = null;
 }
 
 // Show Player Selection After Trivia
@@ -173,6 +318,7 @@ function showPlayerSelection(position) {
         // Store the players for this pending result
         if (gameState.pendingTriviaResults[position]) {
             gameState.pendingTriviaResults[position].players = eligiblePlayers;
+            persistGameState();
         }
     }
 
@@ -202,6 +348,8 @@ function displayPlayerList(players, position) {
     players.forEach(player => {
         const playerOption = document.createElement('div');
         playerOption.className = 'player-option';
+        playerOption.setAttribute('role', 'button');
+        playerOption.setAttribute('tabindex', '0');
         playerOption.innerHTML = `
             <div class="player-rating-display">${player.rating}</div>
             <h3>${player.name}</h3>
@@ -211,6 +359,13 @@ function displayPlayerList(players, position) {
         
         playerOption.addEventListener('click', function() {
             selectPlayer(player);
+        });
+
+        playerOption.addEventListener('keydown', event => {
+            if (isActivationKey(event)) {
+                event.preventDefault();
+                selectPlayer(player);
+            }
         });
         
         playerList.appendChild(playerOption);
@@ -222,58 +377,7 @@ function selectPlayer(player) {
     if (!currentPositionSlot) return;
 
     const position = currentPositionSlot.getAttribute('data-position');
-
-    // Remove empty class and content
-    currentPositionSlot.classList.remove('empty');
-    currentPositionSlot.innerHTML = '';
-
-    // Create container with rarity background
-    const playerCard = document.createElement('div');
-    playerCard.className = 'player-card-background';
-    playerCard.style.width = '100%';
-    playerCard.style.height = '100%';
-    playerCard.style.position = 'absolute';
-    playerCard.style.top = '0';
-    playerCard.style.left = '0';
-    playerCard.style.background = getRarityGradient(player.rarity);
-    playerCard.style.borderRadius = '5px';
-    playerCard.style.border = '2px solid black';
-    playerCard.style.display = 'flex';
-    playerCard.style.alignItems = 'center';
-    playerCard.style.justifyContent = 'center';
-    playerCard.style.padding = '5px';
-    playerCard.style.boxSizing = 'border-box';
-
-    // Add team logo image inside the container
-    const teamLogo = document.createElement('img');
-    teamLogo.className = 'team-logo';
-    teamLogo.src = teamLogos[player.team] || 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Major_League_Baseball_logo.svg';
-    teamLogo.alt = `${player.team} logo`;
-    teamLogo.style.width = '80%';
-    teamLogo.style.height = '80%';
-    teamLogo.style.objectFit = 'contain';
-
-    playerCard.appendChild(teamLogo);
-
-    // Rating badge background
-    const ratingBadge = document.createElement('div');
-    ratingBadge.className = 'player-rating-badge';
-
-    // Rating text
-    const ratingText = document.createElement('div');
-    ratingText.className = 'player-rating-text';
-    ratingText.textContent = player.rating;
-
-    // Player name label
-    const nameLabel = document.createElement('div');
-    nameLabel.className = 'player-name';
-    nameLabel.textContent = player.name;
-
-    // Append elements
-    currentPositionSlot.appendChild(playerCard);
-    currentPositionSlot.appendChild(ratingBadge);
-    currentPositionSlot.appendChild(ratingText);
-    currentPositionSlot.appendChild(nameLabel);
+    renderPlayerSlot(currentPositionSlot, player);
 
     // Update game state
     gameState.selectedPlayers[position] = {
@@ -291,9 +395,11 @@ function selectPlayer(player) {
     // Update UI
     updateScore();
     updateOverallRating();
+    persistGameState();
 
     // Close modal
     closePlayerModal();
+    currentPositionSlot = null;
 }
 
 // Show Trivia Result for Selected Player
@@ -388,7 +494,9 @@ function showLeaders() {
 }
 
 // Reset Game
-function resetGame() {
+function resetGame(options = {}) {
+    const preserveStorage = Boolean(options.preserveStorage);
+
     // Clear all selected players
     gameState.selectedPlayers = {};
     gameState.correctCount = 0;
@@ -396,6 +504,7 @@ function resetGame() {
     gameState.currentQuestion = null;
     gameState.answeredCorrectly = false;
     gameState.pendingTriviaResults = {}; // Clear pending results
+    currentPositionSlot = null;
 
     // Pre-cache random questions for each position
     gameState.cachedQuestions = {};
@@ -420,6 +529,10 @@ function resetGame() {
 
     // Close any open modal
     closePlayerModal();
+
+    if (!preserveStorage) {
+        clearPersistedGame();
+    }
 }
 
 // Initialize game when DOM is loaded

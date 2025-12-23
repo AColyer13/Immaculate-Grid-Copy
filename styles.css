@@ -938,4 +938,8 @@ body {
     pointer-events: none;
     display: block;
   }
+  
+  .modal-content {
+    padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom, 34px)) !important;
+  }
 }
