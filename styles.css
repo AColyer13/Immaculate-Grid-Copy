@@ -291,10 +291,10 @@ html{
     .right-field  { --px:  0.90; --py: -1.32; }
 
     /* Infield */
-    .third-base  { --px: -0.96; --py:  0.0; }
+    .third-base  { --px: -0.92; --py:  0.0; }
     .shortstop   { --px: -0.44; --py: -0.66; }
     .second-base { --px:  0.44; --py: -0.66; }
-    .first-base  { --px:  0.96; --py:  0.0; }
+    .first-base  { --px:  0.92; --py:  0.0; }
 
     /* Battery */
     .catcher           { --px: 0.00; --py:  1.02; }
