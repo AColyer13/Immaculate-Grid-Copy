@@ -67,7 +67,7 @@ html{
 }
 
 /* Optional: tweak layout on narrow screens (adjust to taste) */
-@media (max-width: 600px){
+@media (max-width: 600px) and (orientation: portrait){
     :root{
         /* More vertical room for the outfield + top UI */
         --diamond-top: 42%;
@@ -77,6 +77,31 @@ html{
 
         /* Allow a slightly smaller diamond on very small phones */
         --diamond-size: clamp(160px, 35vmin, 260px);
+    }
+}
+
+/* NEW: mobile + iPad landscape */
+@media (max-width: 1024px) and (orientation: landscape){
+    :root{
+        /* slightly tighter header so the field gets more height */
+        --topbar-pad: 8px;
+        --topbar-min-h: 44px;
+
+        /* bring the diamond up (landscape is height-constrained) */
+        --diamond-top: 28%;
+
+        /* scale for landscape; vmin is good here */
+        --diamond-size: clamp(190px, 42vmin, 320px);
+        --card-w: clamp(52px, 7.2vmin, 78px);
+    }
+}
+
+/* EXTRA: very short landscape phones */
+@media (max-width: 932px) and (max-height: 450px) and (orientation: landscape){
+    :root{
+        --diamond-top: 24%;
+        --diamond-size: clamp(170px, 44vmin, 280px);
+        --card-w: clamp(46px, 6.6vmin, 70px);
     }
 }
 
@@ -284,7 +309,7 @@ html{
 .designated-hitter { --px: 0.85; --py:  0.72; }
 
 /* Mobile: pull everything inward a bit so it fits nicely in portrait */
-@media (max-width: 600px) {
+@media (max-width: 600px) and (orientation: portrait) {
     /* Outfield */
     .left-field   { --px: -0.90; --py: -1.32; }
     .center-field { --px:  0.00; --py: -1.55; }
@@ -299,6 +324,21 @@ html{
     /* Battery */
     .catcher           { --px: 0.00; --py:  1.02; }
     .designated-hitter { --px: 0.82; --py:  0.80; }
+}
+
+/* NEW: Landscape positioning (closer to your 16:9 feel, less vertical spread) */
+@media (max-width: 1024px) and (orientation: landscape){
+    .left-field   { --px: -1.05; --py: -0.80; }
+    .center-field { --px:  0.00; --py: -0.98; }
+    .right-field  { --px:  1.05; --py: -0.80; }
+
+    .third-base  { --px: -0.90; --py:  0.02; }
+    .shortstop   { --px: -0.48; --py: -0.52; }
+    .second-base { --px:  0.48; --py: -0.52; }
+    .first-base  { --px:  0.90; --py:  0.02; }
+
+    .catcher           { --px: 0.00; --py:  0.92; }
+    .designated-hitter { --px: 0.85; --py:  0.70; }
 }
 
 /* Player Cards */
