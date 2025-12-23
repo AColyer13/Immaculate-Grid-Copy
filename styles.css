@@ -33,25 +33,23 @@ body {
     z-index: -2;
 }
 
-.field-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+/* Add responsive sizing variables (place near top, e.g. after the * reset) */
+:root{
+    /* Card scales down on small screens, caps at your current size */
+    --card-w: clamp(60px, 8vmin, 85.5px);
 
-    /* Responsive diamond sizing + shared anchor point (diamond + mound stay aligned) */
-    --diamond-size: clamp(220px, 55vmin, 360px);
-    --diamond-center-x: 50%;
-    --diamond-center-y: 46%;
+    /* Diamond scales down on small screens, caps at your current size */
+    --diamond-size: clamp(180px, 35vmin, 300px);
+    --diamond-top: 35%;
 }
 
 /* Baseball Diamond */
 .field-container::before {
     content: '';
     position: absolute;
-    top: var(--diamond-center-y);
-    left: var(--diamond-center-x);
-    transform: translate(-50%, -50%) rotate(45deg);
+    top: var(--diamond-top);
+    left: 50%;
+    transform: translate(-50%, 0) rotate(45deg);
     width: var(--diamond-size);
     height: var(--diamond-size);
     background: rgba(210, 180, 140, 0.8);
@@ -60,19 +58,23 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Pitcher's Mound (fixed circle centered in the diamond) */
+/* Pitcher's Mound (center it on the diamond instead of the viewport) */
 .field-container::after {
     content: '';
     position: absolute;
-    top: var(--diamond-center-y);
-    left: var(--diamond-center-x);
+
+    /* diamond center Y = diamond-top + (diamond-size / 2) */
+    top: calc(var(--diamond-top) + (var(--diamond-size) / 2));
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: clamp(18px, 4.5vmin, 35px);
-    height: clamp(18px, 4.5vmin, 35px);
+
+    width: clamp(18px, 4vmin, 35px);
+    height: clamp(18px, 4vmin, 35px);
+
     background: rgba(165, 135, 100, 0.9);
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.4);
-    z-index: 0;
+    z-index: 1; /* ensure it sits above the diamond */
 }
 
 #root {
@@ -154,7 +156,7 @@ body {
 /* Outfield */
 .left-field {
     top: 18%;
-    left: 28%;
+    left: 25%;
     transform: translate(-50%, -50%);
 }
 
@@ -166,32 +168,32 @@ body {
 
 .right-field {
     top: 18%;
-    right: 28%;
+    right: 25%;
     transform: translate(50%, -50%);
 }
 
 /* Infield */
 .third-base {
     top: 42%;
-    left: 34%;
+    left: 36%;
     transform: translate(-50%, -50%);
 }
 
 .shortstop {
     top: 25%;
-    left: 41%;
+    left: 43%;
     transform: translate(-50%, -50%);
 }
 
 .second-base {
     top: 25%;
-    right: 41%;
+    right: 43%;
     transform: translate(50%, -50%);
 }
 
 .first-base {
     top: 42%;
-    right: 34%;
+    right: 36%;
     transform: translate(50%, -50%);
 }
 
@@ -204,14 +206,15 @@ body {
 
 .designated-hitter {
     top: 72%;
-    right: 28%;
+    right: 25%;
     transform: translate(0, -50%);
 }
 
 /* Player Cards */
 .player {
-    width: 85.5px;
-    height: 114px;
+    width: var(--card-w);
+    height: auto;
+    aspect-ratio: 3 / 4; /* ~85.5 x 114 */
     background-color: white;
     border-radius: 5px;
     position: relative;
@@ -233,8 +236,9 @@ body {
     background: rgba(255, 255, 255, 0.9);
 }
 
+/* Optional: keep the "empty +" from overpowering on small screens */
 .empty-text {
-    font-size: 48px;
+    font-size: clamp(28px, 5vmin, 48px);
     color: #888;
     margin: 0;
 }
