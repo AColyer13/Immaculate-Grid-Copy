@@ -85,7 +85,7 @@ html {
     --topbar-pad: 12px;
     --topbar-min-h: 50px;
     --topbar-h: calc(var(--safe-top) + (var(--topbar-pad) * 2) + var(--topbar-min-h));
-    --topbar-overlap: 10px;
+    --topbar-overlap: var(--topbar-h);
 
     /* Edge gutters */
     --edge-pad: 12px;
