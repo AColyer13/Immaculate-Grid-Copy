@@ -254,6 +254,7 @@ html{
     z-index: 10;
     transition: all 0.2s ease;
     -webkit-appearance: none;
+    appearance: none;
     border-radius: 8px;
 }
 
@@ -599,6 +600,7 @@ html{
     color: white;
     transition: all 0.3s ease;
     -webkit-appearance: none;
+    appearance: none;
     outline: none;
 }
 
