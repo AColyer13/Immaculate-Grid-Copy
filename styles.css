@@ -1,11 +1,8 @@
+/* Global defaults */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-/* Cross-platform performance and rendering optimizations */
-* {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -18,8 +15,6 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
@@ -38,30 +33,42 @@ body {
     z-index: -2;
 }
 
+.field-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+
+    /* Responsive diamond sizing + shared anchor point (diamond + mound stay aligned) */
+    --diamond-size: clamp(220px, 55vmin, 360px);
+    --diamond-center-x: 50%;
+    --diamond-center-y: 46%;
+}
+
 /* Baseball Diamond */
 .field-container::before {
     content: '';
     position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, 0) rotate(45deg);
-    width: 300px;
-    height: 300px;
+    top: var(--diamond-center-y);
+    left: var(--diamond-center-x);
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: var(--diamond-size);
+    height: var(--diamond-size);
     background: rgba(210, 180, 140, 0.8);
     border: 3px solid rgba(255, 255, 255, 0.5);
     z-index: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Pitcher's Mound */
+/* Pitcher's Mound (fixed circle centered in the diamond) */
 .field-container::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: var(--diamond-center-y);
+    left: var(--diamond-center-x);
     transform: translate(-50%, -50%);
-    width: 35px;
-    height: 35px;
+    width: clamp(18px, 4.5vmin, 35px);
+    height: clamp(18px, 4.5vmin, 35px);
     background: rgba(165, 135, 100, 0.9);
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.4);
@@ -147,7 +154,7 @@ body {
 /* Outfield */
 .left-field {
     top: 18%;
-    left: 25%;
+    left: 28%;
     transform: translate(-50%, -50%);
 }
 
@@ -159,32 +166,32 @@ body {
 
 .right-field {
     top: 18%;
-    right: 25%;
+    right: 28%;
     transform: translate(50%, -50%);
 }
 
 /* Infield */
 .third-base {
     top: 42%;
-    left: 36%;
+    left: 34%;
     transform: translate(-50%, -50%);
 }
 
 .shortstop {
     top: 25%;
-    left: 43%;
+    left: 41%;
     transform: translate(-50%, -50%);
 }
 
 .second-base {
     top: 25%;
-    right: 43%;
+    right: 41%;
     transform: translate(50%, -50%);
 }
 
 .first-base {
     top: 42%;
-    right: 36%;
+    right: 34%;
     transform: translate(50%, -50%);
 }
 
@@ -197,7 +204,7 @@ body {
 
 .designated-hitter {
     top: 72%;
-    right: 25%;
+    right: 28%;
     transform: translate(0, -50%);
 }
 
@@ -525,25 +532,7 @@ body {
     border-color: #e74c3c;
 }
 
-.result-message {
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-}
-
-.result-message.correct {
-    background: rgba(39, 174, 96, 0.3);
-    color: #2ecc71;
-}
-
-.result-message.incorrect {
-    background: rgba(231, 76, 60, 0.3);
-    color: #e74c3c;
-}
-
+.result-message,
 .trivia-result-message {
     text-align: center;
     font-size: 18px;
@@ -553,11 +542,13 @@ body {
     margin: 15px 0;
 }
 
+.result-message.correct,
 .trivia-result-message.correct {
     background: rgba(39, 174, 96, 0.3);
     color: #2ecc71;
 }
 
+.result-message.incorrect,
 .trivia-result-message.incorrect {
     background: rgba(231, 76, 60, 0.3);
     color: #e74c3c;
