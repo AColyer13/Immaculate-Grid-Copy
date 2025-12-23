@@ -929,3 +929,18 @@ body {
         background: white;
     }
 }
+
+@media (max-width: 600px) {
+  body::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: env(safe-area-inset-bottom, 34px);
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
+    z-index: 2147483647;
+    pointer-events: none;
+    display: block;
+  }
+}
