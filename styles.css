@@ -195,9 +195,7 @@ html {
 
     min-height: var(--topbar-min-h);
 
-    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0));
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    /* Removed background and backdrop-filter for complete transparency */
 }
 
 .top-bar__actions {
@@ -852,7 +850,7 @@ html {
 
 @media (prefers-color-scheme: dark) {
     .top-bar {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.15));
+        /* Removed background for complete transparency */
         color: var(--color-text);
     }
     .modal {
@@ -866,7 +864,7 @@ html {
 
 @media (prefers-color-scheme: light) {
     .top-bar {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.28), rgba(0,0,0,0));
+        /* Removed background for complete transparency */
         color: var(--color-text);
     }
 }
