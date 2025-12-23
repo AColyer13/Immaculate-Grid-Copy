@@ -292,9 +292,9 @@ html{
 }
 
 /* Outfield (scaled offsets) - tuned for 16:9 */
-.left-field   { --px: -1.15; --py: -0.9; }
-.center-field { --px:  0.00; --py: -1.10; }
-.right-field  { --px:  1.15; --py: -0.9; }
+.left-field   { --px: -1.15; --py: -1.00; }
+.center-field { --px:  0.00; --py: -1.15; }
+.right-field  { --px:  1.15; --py: -1.00; }
 
 /* Infield (scaled offsets) - keep near diamond edges, avoid overlap */
 .third-base  { --px: -0.90; --py:  0.00; }
@@ -303,7 +303,7 @@ html{
 .first-base  { --px:  0.90; --py:  0.00; }
 
 /* Battery */
-.catcher           { --px: 0.00; --py:  1.03; }
+.catcher           { --px: 0.00; --py:  0.96; }
 .designated-hitter { --px: 0.85; --py:  0.72; }
 
 /* Mobile: pull everything inward a bit so it fits nicely in portrait */
