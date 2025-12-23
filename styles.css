@@ -67,6 +67,9 @@ html{
 
     /* how much to "pull up" content under the fixed top bar (tweak if needed) */
     --topbar-overlap: 10px;
+
+    /* controls the left/right "gutters" (top bar + safe-area feel) */
+    --edge-pad: 12px;
 }
 
 /* Optional: tweak layout on narrow screens (adjust to taste) */
@@ -161,8 +164,8 @@ html{
 
     padding-top: calc(var(--topbar-pad) + var(--safe-top));
     padding-bottom: var(--topbar-pad);
-    padding-left: calc(var(--topbar-pad) + var(--safe-left));
-    padding-right: calc(var(--topbar-pad) + var(--safe-right));
+    padding-left: calc(var(--edge-pad) + var(--safe-left));
+    padding-right: calc(var(--edge-pad) + var(--safe-right));
 
     min-height: var(--topbar-min-h);
 
@@ -212,12 +215,6 @@ html{
     z-index: 1; /* ensure it sits above the diamond */
 }
 
-#root {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
 .foregroundImage {
     position: fixed;
     inset: 0;
@@ -260,9 +257,7 @@ html{
     border-radius: 8px;
 }
 
-.info { right: calc(80px + var(--safe-right)); }
-
-.reset-btn { right: calc(140px + var(--safe-right));
+.reset-btn {
     background: #e74c3c;
     color: white;
     border: none;
