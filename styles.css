@@ -340,9 +340,9 @@ body {
 
 /* Portrait phone positions */
 @media (max-width: 600px) and (orientation: portrait) {
-    .left-field   { --px: -1.00; --py: -1.42; }
-    .center-field { --px:  0.00; --py: -1.65; }
-    .right-field  { --px:  1.00; --py: -1.42; }
+    .left-field   { --px: -1.00; --py: -1.46; }
+    .center-field { --px:  0.00; --py: -1.64; }
+    .right-field  { --px:  1.00; --py: -1.46; }
 
     .third-base   { --px: -0.92; --py:  0.0; }
     .shortstop    { --px: -0.44; --py: -0.76; }
