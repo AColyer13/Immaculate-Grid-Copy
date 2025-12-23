@@ -1,6 +1,225 @@
 /* Mobile-Specific Styles for Immaculate Grid */
 /* Optimized for screens 768px and below */
 
+/* iPhone-specific optimizations */
+@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* iPhone viewport and safe area handling */
+    body {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+    }
+
+    /* Better iPhone font rendering */
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* iPhone modal scrolling improvements */
+    .modal-content {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+    }
+
+    /* Better button interactions on iPhone */
+    button, .player, .player-option, .trivia-answer {
+        -webkit-appearance: none;
+        border-radius: 8px;
+        transition: all 0.1s ease;
+    }
+
+    button:active, .player:active, .player-option:active, .trivia-answer:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    /* iPhone-specific modal positioning */
+    .modal {
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+}
+
+/* iPhone performance optimizations */
+@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* Hardware acceleration for smoother animations */
+    .player, .modal-content, .trivia-answer, .player-option {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
+    }
+
+    /* Better scrolling performance */
+    .player-list {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+    }
+
+    /* iPhone-specific input handling */
+    .player-search input {
+        -webkit-appearance: none;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .player-search input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .player-search input:focus {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #f39c12;
+        outline: none;
+    }
+}
+
+/* iPhone SE and smaller devices */
+@media screen and (max-width: 375px) {
+    .topLeftText {
+        font-size: 18px !important;
+    }
+
+    .player {
+        width: 50px !important;
+        height: 65px !important;
+    }
+
+    .empty-text {
+        font-size: 24px !important;
+    }
+
+    .absolute-element {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .animated-number {
+        font-size: 20px !important;
+    }
+
+    .botRightText h1 {
+        font-size: 14px !important;
+    }
+}
+
+/* iPhone X, XS, 11 Pro, 12 mini, 13 mini and newer with notches */
+@media screen and (max-width: 768px) and (max-height: 926px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* Safe area adjustments for notched devices */
+    .topLeftText {
+        top: env(safe-area-inset-top, 10px) !important;
+        top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+    }
+
+    .info, .leaders, .reset-btn {
+        top: env(safe-area-inset-top, 10px) !important;
+        top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+    }
+
+    .botRightText {
+        bottom: env(safe-area-inset-bottom, 15px) !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 15px) !important;
+    }
+
+    .absolute-element {
+        bottom: env(safe-area-inset-bottom, 5%) !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 5%) !important;
+    }
+
+    /* Adjust field positions for taller screens */
+    .left-field {
+        top: 12% !important;
+    }
+
+    .center-field {
+        top: 6% !important;
+    }
+
+    .right-field {
+        top: 12% !important;
+    }
+
+    .catcher {
+        top: 78% !important;
+    }
+
+    .designated-hitter {
+        top: 72% !important;
+    }
+}
+
+/* iPhone landscape mode optimizations */
+@media screen and (max-width: 896px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .topLeftText {
+        font-size: 16px !important;
+        top: 5px !important;
+    }
+
+    .info, .leaders, .reset-btn {
+        width: 35px !important;
+        height: 35px !important;
+        top: 5px !important;
+    }
+
+    .player {
+        width: 50px !important;
+        height: 65px !important;
+    }
+
+    .empty-text {
+        font-size: 24px !important;
+    }
+
+    .absolute-element {
+        width: 60px !important;
+        height: 60px !important;
+        bottom: 2% !important;
+    }
+
+    .animated-number {
+        font-size: 18px !important;
+    }
+
+    .botRightText h1 {
+        font-size: 12px !important;
+    }
+
+    .modal-content {
+        max-height: 90vh !important;
+        margin: 5% auto !important;
+    }
+
+    /* Adjust positions for landscape */
+    .left-field {
+        top: 20% !important;
+        left: 15% !important;
+    }
+
+    .center-field {
+        top: 15% !important;
+    }
+
+    .right-field {
+        top: 20% !important;
+        right: 15% !important;
+    }
+
+    .catcher {
+        top: 70% !important;
+    }
+
+    .designated-hitter {
+        top: 65% !important;
+        right: 15% !important;
+    }
+}
+
 /* Base mobile adjustments */
 body {
     font-size: 14px;
