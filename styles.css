@@ -261,6 +261,10 @@ html {
     font-weight: bold;
 }
 
+.info {
+    background: transparent;
+}
+
 /* ===== BASEBALL FIELD ===== */
 
 .field-container {
@@ -590,6 +594,10 @@ html {
 /* Mobile modal - full height sheet */
 @media (max-width: 600px), (max-aspect-ratio: 3/4) {
     .modal {
+        top: var(--safe-top);
+        bottom: var(--safe-bottom);
+        left: var(--safe-left);
+        right: var(--safe-right);
         padding: 0;
     }
 
@@ -598,12 +606,12 @@ html {
         max-width: none;
         margin: 0;
         border-radius: 0;
-        height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
+        height: 100%;
         max-height: none;
-        padding-top: calc(var(--space-xl) + var(--safe-top));
-        padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
-        padding-left: calc(var(--space-lg) + var(--safe-left));
-        padding-right: calc(var(--space-lg) + var(--safe-right));
+        padding-top: var(--space-xl);
+        padding-bottom: var(--space-xl);
+        padding-left: var(--space-lg);
+        padding-right: var(--space-lg);
     }
 }
 
