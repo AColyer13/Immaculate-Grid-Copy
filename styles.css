@@ -284,7 +284,7 @@ html{
 .designated-hitter { --px: 0.85; --py:  0.72; }
 
 /* Mobile: pull everything inward a bit so it fits nicely in portrait */
-@media (max-width: 600px), (max-aspect-ratio: 3/4){
+@media (max-width: 600px) {
     /* Outfield */
     .left-field   { --px: -0.90; --py: -1.32; }
     .center-field { --px:  0.00; --py: -1.55; }
@@ -462,7 +462,11 @@ html{
 .botRightText {
     position: absolute;
     bottom: calc(20px + var(--safe-bottom));
-    right: calc(20px + var(--safe-right));
+
+    /* moved from right to left */
+    left: calc(20px + var(--safe-left));
+    right: auto;
+
     color: white;
     z-index: 10;
 }
