@@ -14,16 +14,13 @@
 }
 
 html {
-    height: 100dvh;
     min-height: 100dvh;
     background-color: #2d6b3a;
     overflow: hidden;
 }
 
 body {
-    height: 100dvh;
     min-height: 100dvh;
-    width: 100vw;
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
@@ -32,7 +29,6 @@ body {
 
 #root {
     position: relative;
-    width: 100vw;
     height: 100dvh;
     min-height: 100dvh;
     padding-top: max(0px, calc(var(--topbar-h) - var(--topbar-overlap)));
@@ -169,7 +165,6 @@ body {
 
 #root {
     position: relative;
-    width: 100vw;
     height: 100dvh;
     min-height: 100dvh;
     padding-top: max(0px, calc(var(--topbar-h) - var(--topbar-overlap)));
