@@ -509,6 +509,43 @@ body {
     color: #e74c3c;
 }
 
+.trivia-result-message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.trivia-result-message.correct {
+    background: rgba(39, 174, 96, 0.3);
+    color: #2ecc71;
+}
+
+.trivia-result-message.incorrect {
+    background: rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+}
+
+.selected-player-info {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.selected-player-info h3 {
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.selected-player-info p {
+    color: #bbb;
+    font-size: 14px;
+}
+
 /* Animation */
 @keyframes fadeIn {
     from {

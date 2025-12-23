@@ -12,7 +12,7 @@ const teamLogos = {
     "Cubs": "https://www.mlbstatic.com/team-logos/112.svg",
     "Diamondbacks": "https://www.mlbstatic.com/team-logos/109.svg",
     "Dodgers": "https://www.mlbstatic.com/team-logos/119.svg",
-    "Expos": "https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Montreal_Expos_Logo.svg/200px-Montreal_Expos_Logo.svg.png",
+    "Expos": "https://upload.wikimedia.org/wikipedia/en/thumb/3/32/Montreal_Expos_Logo.svg/1280px-Montreal_Expos_Logo.svg.png",
     "Giants": "https://www.mlbstatic.com/team-logos/137.svg",
     "Guardians": "https://www.mlbstatic.com/team-logos/114.svg",
     "Indians": "https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Chief_Wahoo_%28mascot_character%29.svg/960px-Chief_Wahoo_%28mascot_character%29.svg.png",

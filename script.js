@@ -5,7 +5,8 @@ let gameState = {
     overallRating: 0,
     currentQuestion: null,
     answeredCorrectly: false,
-    pendingTriviaResults: {} // Store pending results for each position
+    pendingTriviaResults: {}, // Store pending results for each position
+    cachedQuestions: {} // Store pre-cached questions for each position
 };
 
 let currentPositionSlot = null;
@@ -19,17 +20,21 @@ function getRandomItems(array, count) {
 // Initialize the game
 function init() {
     setupEventListeners();
+    resetGame(); // Initialize game state with cached questions
 }
 
 // Setup Event Listeners
 function setupEventListeners() {
-    // Add click listeners to all empty player slots
+    // Add click listeners to all player slots
     const playerSlots = document.querySelectorAll('.player');
     playerSlots.forEach(slot => {
         slot.addEventListener('click', function() {
             if (this.classList.contains('empty')) {
                 currentPositionSlot = this;
                 openPlayerModal(this.getAttribute('data-position'));
+            } else {
+                // Show trivia result for filled slot
+                showTriviaResult(this.getAttribute('data-position'));
             }
         });
     });
@@ -74,9 +79,8 @@ function openPlayerModal(position) {
         return;
     }
 
-    // Get a random trivia question for this position
-    const questions = triviaQuestions[position];
-    gameState.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+    // Use the pre-cached question for this position
+    gameState.currentQuestion = gameState.cachedQuestions[position];
 
     // Show trivia question first
     showTriviaQuestion(position);
@@ -272,7 +276,13 @@ function selectPlayer(player) {
     currentPositionSlot.appendChild(nameLabel);
 
     // Update game state
-    gameState.selectedPlayers[position] = player;
+    gameState.selectedPlayers[position] = {
+        ...player,
+        triviaResult: {
+            answeredCorrectly: gameState.answeredCorrectly,
+            question: gameState.currentQuestion
+        }
+    };
     gameState.correctCount++;
 
     // Clear the pending result for this position
@@ -286,15 +296,44 @@ function selectPlayer(player) {
     closePlayerModal();
 }
 
-// Get Rarity Color for placeholder
-function getRarityColor(rarity) {
-    const colors = {
-        legendary: 'e6bc35',
-        epic: 'a335ee',
-        rare: '0070dd',
-        common: '9d9d9d'
-    };
-    return colors[rarity] || colors.common;
+// Show Trivia Result for Selected Player
+function showTriviaResult(position) {
+    const selectedPlayer = gameState.selectedPlayers[position];
+    if (!selectedPlayer || !selectedPlayer.triviaResult) return;
+
+    const modal = document.getElementById('playerModal');
+    modal.style.display = 'block';
+
+    const question = selectedPlayer.triviaResult.question;
+    const answeredCorrectly = selectedPlayer.triviaResult.answeredCorrectly;
+
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <span class="close">&times;</span>
+        <h2>Trivia Result - ${position}</h2>
+        <div class="trivia-container">
+            <p class="trivia-question">${question.question}</p>
+            <div class="trivia-answers">
+                ${question.answers.map((answer, index) => {
+                    let buttonClass = 'trivia-answer';
+                    if (index === question.correct) {
+                        buttonClass += ' correct';
+                    }
+                    return `<button class="${buttonClass}" disabled>${answer}</button>`;
+                }).join('')}
+            </div>
+            <div class="trivia-result-message ${answeredCorrectly ? 'correct' : 'incorrect'}">
+                You answered: ${answeredCorrectly ? '✓ Correct' : '✗ Incorrect'}
+            </div>
+        </div>
+        <div class="selected-player-info">
+            <h3>Selected Player: ${selectedPlayer.name}</h3>
+            <p>Rating: ${selectedPlayer.rating} | Team: ${selectedPlayer.team}</p>
+        </div>
+    `;
+
+    // Re-attach close button listener
+    document.querySelector('.close').addEventListener('click', closePlayerModal);
 }
 
 // Get Rarity Gradient
@@ -357,6 +396,16 @@ function resetGame() {
     gameState.currentQuestion = null;
     gameState.answeredCorrectly = false;
     gameState.pendingTriviaResults = {}; // Clear pending results
+
+    // Pre-cache random questions for each position
+    gameState.cachedQuestions = {};
+    const positions = ['LF', 'CF', 'RF', '3B', 'SS', '2B', '1B', 'C', 'DH'];
+    positions.forEach(position => {
+        if (triviaQuestions[position]) {
+            const questions = triviaQuestions[position];
+            gameState.cachedQuestions[position] = questions[Math.floor(Math.random() * questions.length)];
+        }
+    });
 
     // Reset all player slots to empty state
     const playerSlots = document.querySelectorAll('.player');
