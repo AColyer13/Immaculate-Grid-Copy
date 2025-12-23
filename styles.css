@@ -383,7 +383,11 @@ body {
 .absolute-element {
     position: absolute;
     bottom: 10%;
-    right: 5%;
+
+    /* moved from right to left */
+    left: calc(5% + var(--safe-left));
+    right: auto;
+
     width: 120px;
     height: 120px;
     z-index: 10;
@@ -447,6 +451,12 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
+
+    /* help iOS safe areas when modal is full-screen */
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
 }
 
 .modal-content {
@@ -456,10 +466,35 @@ body {
     border-radius: 10px;
     width: 80%;
     max-width: 600px;
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-y: auto;
     color: white;
     -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: make modal a full-height sheet (no forced scrolling from margin/max-height) */
+@media (max-width: 600px), (max-aspect-ratio: 3/4){
+    .modal{
+        padding: 0; /* content will handle safe-area padding */
+    }
+
+    .modal-content{
+        width: 100%;
+        max-width: none;
+
+        margin: 0;
+        border-radius: 0;
+
+        /* fill the usable screen area */
+        height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
+        max-height: none;
+
+        /* keep content off the notch/home indicator */
+        padding-top: calc(20px + var(--safe-top));
+        padding-bottom: calc(20px + var(--safe-bottom));
+        padding-left: calc(16px + var(--safe-left));
+        padding-right: calc(16px + var(--safe-right));
+    }
 }
 
 .close {
