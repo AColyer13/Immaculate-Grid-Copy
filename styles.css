@@ -18,8 +18,11 @@ body {
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
+
+    /* iOS viewport correctness (prevents “vh” weirdness) */
     height: 100vh;
-    width: 100vw;
+    height: 100svh;
+    height: 100dvh;
     background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
 }
 
@@ -29,6 +32,8 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100svh;
+    height: 100dvh;
     background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
     z-index: -2;
 }
@@ -45,6 +50,17 @@ body {
     /* Field center (for positioning) */
     --field-cx: 50%;
     --field-cy: calc(var(--diamond-top) + (var(--diamond-size) / 2));
+
+    /* iOS safe-area support (notch / home indicator) */
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+
+    /* Top bar sizing (single source of truth) */
+    --topbar-pad: 12px;
+    --topbar-min-h: 50px;
+    --topbar-h: calc(var(--safe-top) + (var(--topbar-pad) * 2) + var(--topbar-min-h));
 }
 
 /* Optional: tweak layout on narrow screens (adjust to taste) */
@@ -59,6 +75,48 @@ body {
         /* Allow a slightly smaller diamond on very small phones */
         --diamond-size: clamp(160px, 35vmin, 260px);
     }
+}
+
+#root{
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    /* Reserve space so the field/cards never sit under the Dynamic Island header */
+    padding-top: var(--topbar-h);
+}
+
+/* NEW: Safe-area aware top bar */
+.top-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding-top: calc(var(--topbar-pad) + var(--safe-top));
+    padding-bottom: var(--topbar-pad);
+    padding-left: calc(var(--topbar-pad) + var(--safe-left));
+    padding-right: calc(var(--topbar-pad) + var(--safe-right));
+
+    min-height: var(--topbar-min-h);
+
+    /* optional, but helps readability over the field image */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.top-bar__actions{
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 /* Baseball Diamond */
@@ -112,10 +170,14 @@ body {
     pointer-events: none;
 }
 
-.topLeftText {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+/* Title: no longer absolutely positioned */
+.topLeftText{
+    position: static;
+    top: auto;
+    left: auto;
+    margin: 0;
+
+    /* existing styles */
     color: white;
     font-size: 28px;
     font-weight: bold;
@@ -123,9 +185,13 @@ body {
     z-index: 10;
 }
 
-.info, .leaders, .reset-btn {
-    position: absolute;
-    top: 20px;
+/* Buttons/icons: no longer absolutely positioned */
+.info, .leaders, .reset-btn{
+    position: static;
+    top: auto;
+    right: auto;
+
+    /* existing styles */
     width: 50px;
     height: 50px;
     cursor: pointer;
@@ -135,16 +201,9 @@ body {
     border-radius: 8px;
 }
 
-.info {
-    right: 80px;
-}
-
-.leaders {
-    right: 20px;
-}
-
-.reset-btn {
-    right: 140px;
+.info { right: calc(80px + var(--safe-right)); }
+.leaders { right: calc(20px + var(--safe-right)); }
+.reset-btn { right: calc(140px + var(--safe-right));
     background: #e74c3c;
     color: white;
     border: none;
@@ -367,8 +426,8 @@ body {
 /* Bottom Right Score */
 .botRightText {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: calc(20px + var(--safe-bottom));
+    right: calc(20px + var(--safe-right));
     color: white;
     z-index: 10;
 }
