@@ -24,7 +24,7 @@ body {
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
-    background: var(--field-gradient);
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
 }
 
 #root {
@@ -39,7 +39,7 @@ body {
     inset: 0;
     width: auto;
     height: auto;
-    background: var(--field-gradient);
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
     z-index: -2;
 }
 
@@ -61,7 +61,6 @@ body {
     --color-field-dark: #2d6b3a;
     --color-diamond: rgba(210, 180, 140, 0.8);
     --color-mound: rgba(165, 135, 100, 0.9);
-    --field-gradient: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
 
     /* Spacing */
     --space-xs: 4px;
@@ -96,6 +95,9 @@ body {
 
     /* Edge gutters */
     --edge-pad: 12px;
+
+    /* Modal positioning */
+    --modal-offset: clamp(32px, 8vh, 96px);
 
     /* Animation timing */
     --transition-fast: 0.15s ease;
@@ -573,66 +575,61 @@ body {
 .modal {
     display: none;
     position: fixed;
+    inset: 0;
     z-index: 1000;
-    left: 0;
-    top: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)), var(--field-gradient);
-    backdrop-filter: blur(3px);
-    padding-top: var(--safe-top);
-    padding-bottom: var(--safe-bottom);
-    padding-left: var(--safe-left);
-    padding-right: var(--safe-right);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: calc(var(--safe-top) + var(--space-xl)) calc(var(--safe-right) + var(--space-lg))
+        calc(var(--safe-bottom) + var(--space-xl)) calc(var(--safe-left) + var(--space-lg));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-    background: rgba(7, 30, 15, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    margin: 5% auto;
+    background-color: var(--color-surface);
+    margin: var(--modal-offset) auto var(--space-xl);
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
-    width: 80%;
-    max-width: 600px;
-    max-height: min(80vh, calc(100dvh - var(--safe-top) - var(--safe-bottom) - var(--space-xl)));
+    width: min(600px, 90vw);
+    max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - (var(--space-xl) * 2));
     overflow-y: auto;
     color: var(--color-text);
     -webkit-overflow-scrolling: touch;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(6px);
+    padding-top: calc(var(--space-xl) + var(--safe-top));
+    padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
 }
 
 /* Mobile modal - full height sheet */
 @media (max-width: 600px), (max-aspect-ratio: 3/4) {
     .modal {
-        top: var(--safe-top);
-        bottom: var(--safe-bottom);
-        left: var(--safe-left);
-        right: var(--safe-right);
         padding: 0;
+        align-items: stretch;
+        justify-content: stretch;
     }
 
     .modal-content {
         width: 100%;
         max-width: none;
         margin: 0;
-        border-top-left-radius: 18px;
-        border-top-right-radius: 18px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        border-radius: 0;
         height: auto;
         max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
         padding-top: calc(var(--space-xl) + var(--safe-top));
         padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
-        padding-left: var(--space-lg);
-        padding-right: var(--space-lg);
+        padding-left: calc(var(--space-lg) + var(--safe-left));
+        padding-right: calc(var(--space-lg) + var(--safe-right));
     }
 }
 
 @media (max-width: 430px) {
     .modal-content {
         font-size: 15px;
-        padding: var(--space-md);
+        padding-top: calc(var(--space-md) + var(--safe-top));
+        padding-bottom: calc(var(--space-md) + var(--safe-bottom));
+        padding-left: calc(var(--space-md) + var(--safe-left));
+        padding-right: calc(var(--space-md) + var(--safe-right));
     }
 }
 
@@ -941,7 +938,7 @@ body {
     right: 0;
     bottom: 0;
     height: env(safe-area-inset-bottom, 34px);
-        background: var(--field-gradient);
+    background: radial-gradient(ellipse at center, #4a9d5f 0%, #3d8b4f 50%, #2d6b3a 100%);
     z-index: 2147483647;
     pointer-events: none;
     display: block;
