@@ -64,6 +64,9 @@ html{
     --topbar-pad: 12px;
     --topbar-min-h: 50px;
     --topbar-h: calc(var(--safe-top) + (var(--topbar-pad) * 2) + var(--topbar-min-h));
+
+    /* how much to "pull up" content under the fixed top bar (tweak if needed) */
+    --topbar-overlap: 10px;
 }
 
 /* Optional: tweak layout on narrow screens (adjust to taste) */
@@ -138,8 +141,8 @@ html{
     width: 100%;
     height: 100%;
 
-    /* Reserve space so the field/cards never sit under the Dynamic Island header */
-    padding-top: var(--topbar-h);
+    /* Reserve space, but remove the extra "air" under the nav bar */
+    padding-top: max(0px, calc(var(--topbar-h) - var(--topbar-overlap)));
 }
 
 /* NEW: Safe-area aware top bar */
@@ -216,9 +219,8 @@ html{
 }
 
 .foregroundImage {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -312,14 +314,14 @@ html{
 /* Mobile: pull everything inward a bit so it fits nicely in portrait */
 @media (max-width: 600px) and (orientation: portrait) {
     /* Outfield */
-    .left-field   { --px: -0.90; --py: -1.32; }
-    .center-field { --px:  0.00; --py: -1.55; }
-    .right-field  { --px:  0.90; --py: -1.32; }
+    .left-field   { --px: -1.00; --py: -1.42; }
+    .center-field { --px:  0.00; --py: -1.65; }
+    .right-field  { --px:  1.00; --py: -1.42; }
 
     /* Infield */
     .third-base  { --px: -0.92; --py:  0.0; }
-    .shortstop   { --px: -0.44; --py: -0.66; }
-    .second-base { --px:  0.44; --py: -0.66; }
+    .shortstop   { --px: -0.44; --py: -0.76; }
+    .second-base { --px:  0.44; --py: -0.76; }
     .first-base  { --px:  0.92; --py:  0.0; }
 
     /* Battery */
