@@ -2,6 +2,8 @@
 
 A web-based baseball trivia game where users draft their perfect MLB lineup.
 
+https://acolyer13.github.io/Immaculate-Grid-Copy/
+
 ## Features
 
 - **Interactive Baseball Field Layout**: Click on any position to select a player
