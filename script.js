@@ -231,14 +231,23 @@ function showTriviaQuestion(position) {
         <span class="close">&times;</span>
         <h2>Trivia Challenge - ${position}</h2>
         <div class="trivia-container">
-            <p class="trivia-question">${question.question}</p>
-            <div class="trivia-answers">
-                ${question.answers.map((answer, index) => `
-                    <button class="trivia-answer" data-index="${index}">${answer}</button>
-                `).join('')}
-            </div>
+            <p class="trivia-question"></p>
+            <div class="trivia-answers"></div>
         </div>
     `;
+    
+    // Safely inject the question text
+    modalContent.querySelector('.trivia-question').textContent = question.question;
+    
+    // Safely inject answer buttons
+    const answersContainer = modalContent.querySelector('.trivia-answers');
+    question.answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.className = 'trivia-answer';
+        button.setAttribute('data-index', index);
+        button.textContent = answer;
+        answersContainer.appendChild(button);
+    });
     
     // Re-attach close button listener
     document.querySelector('.close').addEventListener('click', closePlayerModal);
@@ -350,12 +359,24 @@ function displayPlayerList(players, position) {
         playerOption.className = 'player-option';
         playerOption.setAttribute('role', 'button');
         playerOption.setAttribute('tabindex', '0');
-        playerOption.innerHTML = `
-            <div class="player-rating-display">${player.rating}</div>
-            <h3>${player.name}</h3>
-            <p>${position} - ${player.team}</p>
-            <p class="rarity-label">${player.rarity.toUpperCase()}</p>
-        `;
+        
+        const ratingDiv = document.createElement('div');
+        ratingDiv.className = 'player-rating-display';
+        ratingDiv.textContent = player.rating;
+        playerOption.appendChild(ratingDiv);
+        
+        const nameHeading = document.createElement('h3');
+        nameHeading.textContent = player.name;
+        playerOption.appendChild(nameHeading);
+        
+        const positionPara = document.createElement('p');
+        positionPara.textContent = `${position} - ${player.team}`;
+        playerOption.appendChild(positionPara);
+        
+        const rarityPara = document.createElement('p');
+        rarityPara.className = 'rarity-label';
+        rarityPara.textContent = player.rarity.toUpperCase();
+        playerOption.appendChild(rarityPara);
         
         playerOption.addEventListener('click', function() {
             selectPlayer(player);
@@ -418,25 +439,38 @@ function showTriviaResult(position) {
         <span class="close">&times;</span>
         <h2>Trivia Result - ${position}</h2>
         <div class="trivia-container">
-            <p class="trivia-question">${question.question}</p>
-            <div class="trivia-answers">
-                ${question.answers.map((answer, index) => {
-                    let buttonClass = 'trivia-answer';
-                    if (index === question.correct) {
-                        buttonClass += ' correct';
-                    }
-                    return `<button class="${buttonClass}" disabled>${answer}</button>`;
-                }).join('')}
-            </div>
+            <p class="trivia-question"></p>
+            <div class="trivia-answers"></div>
             <div class="trivia-result-message ${answeredCorrectly ? 'correct' : 'incorrect'}">
                 You answered: ${answeredCorrectly ? '✓ Correct' : '✗ Incorrect'}
             </div>
         </div>
         <div class="selected-player-info">
-            <h3>Selected Player: ${selectedPlayer.name}</h3>
-            <p>Rating: ${selectedPlayer.rating} | Team: ${selectedPlayer.team}</p>
+            <h3>Selected Player: </h3>
+            <p>Rating: <span id="playerRating"></span> | Team: <span id="playerTeam"></span></p>
         </div>
     `;
+    
+    // Safely inject the question text
+    modalContent.querySelector('.trivia-question').textContent = question.question;
+    
+    // Safely inject answer buttons
+    const answersContainer = modalContent.querySelector('.trivia-answers');
+    question.answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.className = 'trivia-answer';
+        if (index === question.correct) {
+            button.classList.add('correct');
+        }
+        button.disabled = true;
+        button.textContent = answer;
+        answersContainer.appendChild(button);
+    });
+    
+    // Safely inject player info
+    modalContent.querySelector('.selected-player-info h3').textContent = `Selected Player: ${selectedPlayer.name}`;
+    modalContent.getElementById('playerRating').textContent = selectedPlayer.rating;
+    modalContent.getElementById('playerTeam').textContent = selectedPlayer.team;
 
     // Re-attach close button listener
     document.querySelector('.close').addEventListener('click', closePlayerModal);
