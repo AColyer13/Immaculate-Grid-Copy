@@ -1,11 +1,12 @@
 // Trivia Questions Database - Organized by Position
 // Each position has challenging, position-specific questions with randomized answer order
 // All players listed actually played the position mentioned
+// Questions span multiple eras with tougher, more plausible wrong answers from same era/position
 
 const triviaQuestions = {
     "1B": [
-        { question: "Who is known as 'The Iron Horse' among first basemen?", answers: ["Jimmie Foxx", "Lou Gehrig", "Frank Thomas", "Albert Pujols"], correct: 1 },
-        { question: "Which first baseman won the Triple Crown in 2012?", answers: ["Joey Votto", "Albert Pujols", "Miguel Cabrera", "Paul Goldschmidt"], correct: 2 },
+        { question: "Who is known as 'The Iron Horse' among first basemen?", answers: ["Jimmie Foxx", "Lou Gehrig", "Hank Greenberg", "Bill Terry"], correct: 1 },
+        { question: "Which first baseman won the Triple Crown in 2012?", answers: ["Joey Votto", "Prince Fielder", "Miguel Cabrera", "Adrian Gonzalez"], correct: 2 },
         { question: "Who holds the record for most grand slams by a first baseman?", answers: ["Eddie Murray", "Jimmie Foxx", "Lou Gehrig", "Willie McCovey"], correct: 2 },
         { question: "Which first baseman was nicknamed 'The Big Hurt'?", answers: ["Mark McGwire", "Frank Thomas", "Jeff Bagwell", "Fred McGriff"], correct: 1 },
         { question: "Who was the first first baseman to hit 500 home runs?", answers: ["Rafael Palmeiro", "Mark McGwire", "Eddie Murray", "Frank Thomas"], correct: 2 },
