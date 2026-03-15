@@ -294,4 +294,7 @@ const baseballTrivia = {
 
 _randomizeAnswers(baseballTrivia);
 
-export default baseballTrivia;
+// Make trivia data available globally for the app.
+// This app does not use ES modules, so we avoid `export` which causes a syntax error
+// when this file is loaded as a normal <script>.
+window.triviaQuestions = baseballTrivia;
