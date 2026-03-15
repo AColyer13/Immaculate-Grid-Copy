@@ -204,7 +204,7 @@ function setupEventListeners() {
 // Open Player Selection Modal
 function openPlayerModal(position) {
     const modal = document.getElementById('playerModal');
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
 
     // Check if there's a pending trivia result for this position
     if (gameState.pendingTriviaResults[position]) {
@@ -429,7 +429,7 @@ function showTriviaResult(position) {
     if (!selectedPlayer || !selectedPlayer.triviaResult) return;
 
     const modal = document.getElementById('playerModal');
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
 
     const question = selectedPlayer.triviaResult.question;
     const answeredCorrectly = selectedPlayer.triviaResult.answeredCorrectly;

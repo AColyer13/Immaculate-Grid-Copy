@@ -582,7 +582,6 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     padding: calc(var(--safe-top) + var(--space-xl)) calc(var(--safe-right) + var(--space-lg))
         calc(var(--safe-bottom) + var(--space-xl)) calc(var(--safe-left) + var(--space-lg));
-    display: flex;
     align-items: center;
     justify-content: center;
 }
