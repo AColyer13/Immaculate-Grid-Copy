@@ -86,6 +86,25 @@ function loadPersistedGame() {
     }
 }
 
+function setModalLoading(message = '', show = true) {
+    const modalContent = document.querySelector('.modal-content');
+    if (!modalContent) return;
+
+    let loader = modalContent.querySelector('.inline-loading');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.className = 'inline-loading';
+        loader.setAttribute('role', 'status');
+        loader.setAttribute('aria-live', 'polite');
+        loader.hidden = true;
+        const container = modalContent.querySelector('.trivia-container') || modalContent;
+        container.appendChild(loader);
+    }
+
+    loader.textContent = message;
+    loader.hidden = !show;
+}
+
 function renderPlayerSlot(slot, player) {
     if (!slot || !player) return;
 
@@ -94,19 +113,7 @@ function renderPlayerSlot(slot, player) {
 
     const playerCard = document.createElement('div');
     playerCard.className = 'player-card-background';
-    playerCard.style.width = '100%';
-    playerCard.style.height = '100%';
-    playerCard.style.position = 'absolute';
-    playerCard.style.top = '0';
-    playerCard.style.left = '0';
-    playerCard.style.background = getRarityGradient(player.rarity);
-    playerCard.style.borderRadius = '5px';
-    playerCard.style.border = '2px solid black';
-    playerCard.style.display = 'flex';
-    playerCard.style.alignItems = 'center';
-    playerCard.style.justifyContent = 'center';
-    playerCard.style.padding = '5px';
-    playerCard.style.boxSizing = 'border-box';
+    playerCard.classList.add(`rarity-${player.rarity}`);
 
     const teamLogo = document.createElement('img');
     teamLogo.className = 'team-logo';
@@ -291,8 +298,11 @@ function checkAnswer(selectedIndex, position) {
         }
     });
 
-    // Wait a moment then show player selection
+    // Inline loading feedback while we transition to player selection
+    setModalLoading('Loading players…');
+
     setTimeout(() => {
+        setModalLoading('', false);
         showPlayerSelection(position);
     }, 1500);
 }
@@ -474,17 +484,6 @@ function showTriviaResult(position) {
 
     // Re-attach close button listener
     document.querySelector('.close').addEventListener('click', closePlayerModal);
-}
-
-// Get Rarity Gradient
-function getRarityGradient(rarity) {
-    const gradients = {
-        legendary: 'linear-gradient(to right bottom, #e6bc35, #fff3d4, #e6bc35)',
-        epic: 'linear-gradient(to right bottom, #a335ee, #d7b3ff, #a335ee)',
-        rare: 'linear-gradient(to right bottom, #0070dd, #8fc5ff, #0070dd)',
-        common: 'linear-gradient(to right bottom, #9d9d9d, #e5e5e5, #9d9d9d)'
-    };
-    return gradients[rarity] || gradients.common;
 }
 
 // Update Score Display
