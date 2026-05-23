@@ -479,11 +479,11 @@ function showTriviaResult(position) {
     
     // Safely inject player info
     modalContent.querySelector('.selected-player-info h3').textContent = `Selected Player: ${selectedPlayer.name}`;
-    modalContent.getElementById('playerRating').textContent = selectedPlayer.rating;
-    modalContent.getElementById('playerTeam').textContent = selectedPlayer.team;
+    modalContent.querySelector('#playerRating').textContent = selectedPlayer.rating;
+    modalContent.querySelector('#playerTeam').textContent = selectedPlayer.team;
 
     // Re-attach close button listener
-    document.querySelector('.close').addEventListener('click', closePlayerModal);
+    modalContent.querySelector('.close').addEventListener('click', closePlayerModal);
 }
 
 // Update Score Display

@@ -142,8 +142,8 @@ body {
     /* Edge gutters */
     --edge-pad: var(--space-2);
 
-    /* Modal positioning */
-    --modal-offset: clamp(32px, 8vh, 96px);
+    /* Modal optical lift (wide / landscape — sits below visual center otherwise) */
+    --modal-lift: clamp(16px, 3vh, 48px);
 
     /* Animation timing */
     --transition-fast: 0.15s ease;
@@ -644,7 +644,7 @@ body {
 
 .modal-content {
     background-color: var(--color-surface);
-    margin: var(--modal-offset) auto var(--space-xl);
+    margin: 0 auto;
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
     width: min(600px, 90vw);
@@ -656,6 +656,13 @@ body {
     padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
 }
 
+/* Wide viewports: nudge modal above true center (bottom HUD adds visual weight) */
+@media (min-width: 601px) {
+    .modal-content {
+        transform: translateY(calc(-1 * var(--modal-lift))) translateZ(0);
+    }
+}
+
 /* Mobile modal - full height sheet */
 @media (max-width: 600px), (max-aspect-ratio: 3/4) {
     .modal {
@@ -665,6 +672,7 @@ body {
     }
 
     .modal-content {
+        transform: none;
         width: 100%;
         max-width: none;
         margin: 0;
